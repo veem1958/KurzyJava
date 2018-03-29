@@ -57,7 +57,7 @@ public class Matematika extends Subjects {
 	public void addMarks(Students student, int kurz) {
 		double sum;
 		if (kurz == 1) {
-			sum = temy[0] + temy[1] + temy[2] + temy[3];
+			sum = (temy[0] + temy[1] + temy[2] + temy[3]);		 //* getMarks(Teachers lektor);	//???
 			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + sum)*100)/100;
 		}
 		

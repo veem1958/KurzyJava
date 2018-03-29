@@ -1,10 +1,11 @@
 package projectMain;
 
 import java.util.Observable;
+
 import java.util.Observer;
 import java.util.Random;
 
-public class Students {
+public class Students implements Passwords {
 	
 	protected Subjects mat;
 	protected Subjects inf;
@@ -33,6 +34,27 @@ public class Students {
 	
 	public void randomBody (int kurz) {
 		mat.randomMarks(this, kurz);
+	}
+	
+	
+	//**************************************
+	//hesla
+	private String password = "";
+	String alphabet= "abcdefghijklmnopqrstuvwxyz";
+	Random random = new Random();
+	
+	public void setPassword() {
+					
+		for (int i = 0; i < 8; i++) {
+		    char c = alphabet.charAt(random.nextInt(26));
+		    this.password += c;
+		}
+		System.out.println(this.password);
+		//return this.password;
+	}
+	
+	public String getPassword() {		
+		return this.password;
 	}
 	
 

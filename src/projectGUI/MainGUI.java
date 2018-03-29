@@ -3,7 +3,6 @@ package projectGUI;
 
 import javafx.event.*;
 import javafx.application.*;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -30,18 +30,49 @@ public class MainGUI extends Application {
 	private Button student = new Button("ätudenti");
 	private Button lektor = new Button("Lektori");
 	private Button tema = new Button("TÈmy");
+	private Button signOut = new Button("Odhl·siù sa");
 	private TextArea vypis = new TextArea();
 	//private ScrollPane scrol = new ScrollPane(vypis);
 	
+	//
+	private Label login = new Label("Prihlasovacie meno: ");
+	private Label password = new Label("Heslo: ");
+	private TextField loginText = new TextField();
+	private TextField passwordText = new TextField();
+	private Button signIn = new Button("Prihl·siù sa");
+	//
 	
 	public void start(Stage hlavneOkno) {
 		
 		hlavneOkno.setTitle("Window");
 		
+		GridPane loginMenu = new GridPane();
+		
 		BorderPane border = new BorderPane();
 
 		border.setTop(addVBoxTop());
 		border.setCenter(addVBoxBottom()); 
+		border.setBottom(addHBoxLogOut());
+		
+		
+		class Prihlasenie implements EventHandler<ActionEvent> {
+			@Override
+			public void handle(ActionEvent event) {
+				//BorderPane border = new BorderPane();
+				//border.setTop(addVBoxTop());
+				//border.setCenter(addVBoxBottom()); 
+				hlavneOkno.setScene(new Scene(border, 900, 600));
+				hlavneOkno.show();
+			}
+		}
+		
+		signIn.setOnAction(new Prihlasenie());
+		
+		//---------------------------------------
+		//BorderPane border = new BorderPane();
+
+		//border.setTop(addVBoxTop());
+		//border.setCenter(addVBoxBottom()); 
 		
 		
 		
@@ -68,14 +99,43 @@ public class MainGUI extends Application {
 			}
 		});
 		
+		signOut.setOnAction(new EventHandler <ActionEvent>() {
+			@Override 
+	    	public void handle(ActionEvent event) {
+				
+				
+			
+			}
+		});
 		
-		hlavneOkno.setScene(new Scene(border, 900, 600));
+		
+		
+		hlavneOkno.setScene(new Scene(loginMenu(), 700, 400));
 		hlavneOkno.show();
 		
 	}
+	
+	//hlavne prihlasovacie okno
+	private GridPane loginMenu() {
+		GridPane loginMenu = new GridPane();
 		
+		loginMenu.getChildren().addAll(login, password, loginText, passwordText, signIn);
+		
+		GridPane.setConstraints(login, 0, 0);
+		GridPane.setConstraints(loginText, 1, 0);
+		GridPane.setConstraints(password, 0, 1);
+		GridPane.setConstraints(passwordText, 1, 1);
+		GridPane.setConstraints(signIn, 1, 2);
+		
+		loginMenu.setVgap(10);
+		loginMenu.setHgap(10);
+	    loginMenu.setPadding(new Insets(80, 80, 80, 80));
+	    
+		return loginMenu;
+	}
+	
+	//zoznam predmetov
 	private GridPane addGridPane2() {
-		
 		GridPane grid2 = new GridPane();
 		
 		Label predmety = new Label("Predmety");
@@ -100,9 +160,9 @@ public class MainGUI extends Application {
 		return grid2;
 	}
 	
-	
+
+	//zoznam bodov
 	private GridPane addGridPane1() {
-		
 		GridPane grid1 = new GridPane();
 		
 		Label kurzy = new Label("Body");
@@ -136,6 +196,7 @@ public class MainGUI extends Application {
 		return grid1;
 	}
 	
+	
 	private VBox addVBoxBottom() {
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(15, 12, 15, 12));
@@ -154,6 +215,7 @@ public class MainGUI extends Application {
 		
 		return vboxTop;
 	}
+	
 	
 	private HBox addHBoxBottom() {
 		HBox hboxBottom = new HBox();
@@ -188,6 +250,16 @@ public class MainGUI extends Application {
 	    hboxTop.getChildren().addAll(nazov);
 
 	    return hboxTop;
+	}
+	
+	private HBox addHBoxLogOut() {
+		HBox hboxLogOut = new HBox();
+		hboxLogOut.setPadding(new Insets(10, 10, 10, 10));
+		hboxLogOut.setAlignment(Pos.BOTTOM_RIGHT);
+		
+		hboxLogOut.getChildren().addAll(signOut);
+		
+		return hboxLogOut;
 	}
 
 	

@@ -1,22 +1,30 @@
 package projectMain;
 
 import java.util.*;
+
 import java.util.LinkedList;
 import java.util.List;
 
+
 public class MainClass {
 
-	public LinkedList<Students> studenti = new LinkedList<>();
+			public List<Students> studenti = new LinkedList<>();
 	
+
 	public static void main(String[] args) {
 		
 		Students[] student = new Students[100];
 		Teachers[] lektor = new Teachers[5];
 
-		
+				List<Students> studenti = new LinkedList<>();
+		 
 		//inicializacia studentov bez maturity z matematiky a informatiky
 		for (int i = 0; i < 40; i++) {
+
+				studenti.add(student[i] = new Students(new Matematika(false), new Informatika(false)));
+			/*
 			student[i] = new Students(new Matematika(false), new Informatika(false));
+			*/
 			System.out.print("Student[" + i + "]	");
 			student[i].naplnBody();
 			student[i].vypis(0);	
@@ -39,6 +47,27 @@ public class MainClass {
 		
 		System.out.println("\n\n");
 		
+		//list studentov
+		
+			//----------------------------------------------------------
+			/*
+			for (int i = 0; i < 100; i++) {
+				studenti.add(student[i]);
+			}
+			*/
+			int n = 0;
+			
+			Iterator<Students> iter = studenti.iterator();  
+			while(iter.hasNext()) {
+				System.out.print(n + "	");
+				iter.next().vypis(0); 
+				n++;
+			}
+			
+			//--------------------------------------------------------------
+
+		
+			
 		//-----------------------------------------------------------------
 		//pomocny vypis
 		/*
@@ -79,8 +108,12 @@ public class MainClass {
 			student[i].vypis(3);
 			
 		}
+		System.out.println("\n\n\nheslo: ");
+		student[2].setPassword();
+		//student[2].getPassword();
 		
 		System.out.println("\n\n\n");
+		
 		
 		//random body za aktivitu
 		for (int i = 0; i < 10; i++) {
