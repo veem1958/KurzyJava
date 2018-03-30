@@ -110,7 +110,7 @@ public class MainClass {
 		}
 		System.out.println("\n\n\nheslo: ");
 		student[2].setPassword();
-		//student[2].getPassword();
+		System.out.print(student[2].getPassword());
 		
 		System.out.println("\n\n\n");
 		
