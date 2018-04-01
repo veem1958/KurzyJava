@@ -28,7 +28,7 @@ public class Kurzy {
 		
 		//inicializacia studentov s maturitov z matematiky a informatiky
 		for (int i = 40; i < 100; i++) {
-			studenti[0].add(student[i] = new Students(new Matematika(false), new Informatika(false)));
+			studenti[0].add(student[i] = new Students(new Matematika(true), new Informatika(true)));
 			student[i].naplnBody();		
 		}
 				
