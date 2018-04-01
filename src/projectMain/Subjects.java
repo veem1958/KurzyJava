@@ -14,10 +14,7 @@ public abstract class Subjects {
 		
 	public abstract boolean getMaturita(Students student);
 	
-	//
-	public abstract void addMarks(Students student, int kurz);
-	public abstract void randomMarks(Students student, int kurz);
-	
-	
+	public abstract void addMarks(Students student, int kurz, double body);
+		
 
 }

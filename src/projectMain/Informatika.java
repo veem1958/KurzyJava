@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class Informatika extends Subjects {
 
-	double[] marksKurzy = new double[4];		//pole 4 double cisel = body pre kazdy kurz a kazdeho studenta
-	double[] temy = new double[]{ 1, 1, 1, 1, 2, 2, 2, 3, 3, 3};
+	double[] marksKurzy = new double[4];		//pole 4 double cisel = body pre kazdy kurz a kazdeho studenta a ucitela
+	double[] temy = new double[]{ 2, 4, 6 };
 	private boolean maturita;
 	
 	
@@ -27,7 +27,7 @@ public class Informatika extends Subjects {
 		return this.maturita;
 	}
 	
-	
+	//nastavenie pociatocnych bodov studentom pred kurzom
 	public void setMarks(Students student) {
 		
 		if (this.maturita == false) {
@@ -38,6 +38,7 @@ public class Informatika extends Subjects {
 		}
 	}
 	
+	//nastavenie bodov ucitelom
 	public void setMarks(Teachers lektor) {
 		this.marksKurzy[0] = (double) Math.round((Math.random() * 3 + 5)*100)/100;
 	}
@@ -53,28 +54,24 @@ public class Informatika extends Subjects {
 	
 	
 	//pridavanie bodov studentom
-	public void addMarks(Students student, int kurz) {
-		double sum;
+	public void addMarks(Students student, int kurz, double bodyInf) {
+		double plus;
+		double vnimanie = (double) Math.round((Math.random() * 0.3 + 0.7)*100)/100;
+		
 		if (kurz == 1) {
-			sum = temy[0] + temy[1] + temy[2] + temy[3];
-			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + sum)*100)/100;
+			plus = (temy[0] + bodyInf) * vnimanie;
+			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + plus)*100)/100;
 		}
 		
 		if (kurz == 2) {
-			sum = temy[4] + temy[5] + temy[6];
-			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + sum)*100)/100;
+			plus = (temy[1] + bodyInf) * vnimanie;
+			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + plus)*100)/100;
 		}
 		
 		if (kurz == 3) {
-			sum = temy[7] + temy[8] + temy[9];
-			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + sum)*100)/100;
+			plus = (temy[2] + bodyInf) * vnimanie;
+			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + plus)*100)/100;
 		}
-	
 	}
 			
-
-	//nahodne pridavanie bodov podla aktivity
-	public void randomMarks(Students student, int kurz) {
-		this.marksKurzy[kurz] += (double) Math.round((Math.random() * 2 + 1)*100)/100;
-	}	
 }

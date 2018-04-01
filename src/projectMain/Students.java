@@ -9,6 +9,7 @@ public class Students implements Passwords {
 	
 	protected Subjects mat;
 	protected Subjects inf;
+	protected double suma;		//suma 
 	
 	
 	public Students(Subjects mat, Subjects info) {
@@ -27,30 +28,26 @@ public class Students implements Passwords {
 	}
 
 	//pridavanie bodov studentom po jednotlivych kurzoch
-	public void addBody(int kurz) {
-		mat.addMarks(this, kurz);
-		inf.addMarks(this, kurz);
+	public void addBody(int kurz, double bodyMat, double bodyInf) {
+		mat.addMarks(this, kurz, bodyMat);
+		inf.addMarks(this, kurz, bodyInf);
 	}
 	
-	public void randomBody (int kurz) {
-		mat.randomMarks(this, kurz);
-	}
-	
+
 	
 	//**************************************
 	//hesla
 	private String password = "";
-	String alphabet= "abcdefghijklmnopqrstuvwxyz";
-	Random random = new Random();
 	
 	public void setPassword() {
-					
+		
+		String alphabet= "abcdefghijklmnopqrstuvwxyz";
+		Random random = new Random();
+		
 		for (int i = 0; i < 8; i++) {
 		    char c = alphabet.charAt(random.nextInt(26));
 		    this.password += c;
 		}
-		System.out.println(this.password);
-		//return this.password;
 	}
 	
 	public String getPassword() {		
