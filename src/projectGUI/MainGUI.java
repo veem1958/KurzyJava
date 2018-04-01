@@ -110,7 +110,7 @@ public class MainGUI extends Application {
 		
 		
 		
-		hlavneOkno.setScene(new Scene(loginMenu(), 700, 400));
+		hlavneOkno.setScene(new Scene(loginMenu(), 440, 200));
 		hlavneOkno.show();
 		
 	}
@@ -129,7 +129,7 @@ public class MainGUI extends Application {
 		
 		loginMenu.setVgap(10);
 		loginMenu.setHgap(10);
-	    loginMenu.setPadding(new Insets(80, 80, 80, 80));
+	    loginMenu.setPadding(new Insets(40, 40, 40, 40));
 	    
 		return loginMenu;
 	}
