@@ -39,21 +39,21 @@ public class MainClass {
 		
 		course.vypisLektor();
 		
-		System.out.println("\n\n\n");
+		System.out.println("\n\n");
 		
 		course.vypisStudent(0);
 		
-		System.out.println("\n\n\n");
+		System.out.println("\n\n");
 				
 		course.beh(1);
 		course.vypisStudent(1);
 		
-		System.out.println("\n\n\n");
+		System.out.println("\n\n");
 		
 		course.beh(2);
 		course.vypisStudent(2);
 		
-		System.out.println("\n\n\n");
+		System.out.println("\n\n");
 		
 		course.beh(3);
 		course.vypisStudent(3);

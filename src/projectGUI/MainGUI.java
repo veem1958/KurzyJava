@@ -2,6 +2,9 @@ package projectGUI;
 
 
 import javafx.event.*;
+
+import java.util.Iterator;
+
 import javafx.application.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,10 +26,19 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import projectMain.Kurzy;
+import projectMain.Students;
+import projectMain.Matematika;
+import projectMain.Informatika;
+import projectMain.Teachers;
+import projectMain.Passwords;
+import projectMain.Subjects;
+
+
 public class MainGUI extends Application {
 
 	private Label prehlad = new Label("PREHºAD:");
-	private Label nazov = new Label("KURZY");
+	private Label nazov = new Label("PRÕPRAVN› KURZ Z MATEMATIKY A INFORMATIKY");
 	private Button student = new Button("ätudenti");
 	private Button lektor = new Button("Lektori");
 	private Button tema = new Button("TÈmy");
@@ -42,78 +54,176 @@ public class MainGUI extends Application {
 	private Button signIn = new Button("Prihl·siù sa");
 	//
 	
+	//studenti
+	Label kurzy = new Label("Prehæad bodov");
+	Button kurz0 = new Button("Pred kurzom");
+	Button kurz1 = new Button("Po 1.kurze");
+	Button kurz2 = new Button("Po 2.kurze");
+	Button kurz3 = new Button("Po 3.kurze");
+	//
+	
+	//lektori
+	Label beh = new Label("Beh kurzov");
+	//Button beh0L = new Button("Pred kurzom");
+	Button beh1 = new Button("1.kurz");
+	Button beh2 = new Button("2.kurz");
+	Button beh3 = new Button("3.kurz");
+	//
+	
+	//temy
+	Label predmety = new Label("Predmety");
+	Button mat = new Button("Matematika");
+	Button inf = new Button("Informatika");
+	//
+	
+	Kurzy course = new Kurzy();
+	
+	
+	//main-----------------------------------------------------------------------
 	public void start(Stage hlavneOkno) {
-		
+				
 		hlavneOkno.setTitle("Window");
 		
 		GridPane loginMenu = new GridPane();
-		
 		BorderPane border = new BorderPane();
 
 		border.setTop(addVBoxTop());
 		border.setCenter(addVBoxBottom()); 
 		border.setBottom(addHBoxLogOut());
 		
+		hlavneOkno.setScene(new Scene(loginMenu(), 460, 200));
+		hlavneOkno.show();
+		hlavneOkno.centerOnScreen();
 		
+		//-------------------------------------------------------------
+		//start hlavneho okna a menu
 		class Prihlasenie implements EventHandler<ActionEvent> {
 			@Override
-			public void handle(ActionEvent event) {
-				//BorderPane border = new BorderPane();
-				//border.setTop(addVBoxTop());
-				//border.setCenter(addVBoxBottom()); 
+			public void handle(ActionEvent event) { 
 				hlavneOkno.setScene(new Scene(border, 900, 600));
 				hlavneOkno.show();
+				hlavneOkno.centerOnScreen();
+				course.inicializacia();
+				kurz1.setDisable(true);
+				kurz2.setDisable(true);
+				kurz3.setDisable(true);
+				beh2.setDisable(true);
+				beh3.setDisable(true);
 			}
 		}
 		
-		signIn.setOnAction(new Prihlasenie());
-		
-		//---------------------------------------
-		//BorderPane border = new BorderPane();
-
-		//border.setTop(addVBoxTop());
-		//border.setCenter(addVBoxBottom()); 
-		
-		
-		
-		student.setOnAction(new EventHandler <ActionEvent>() { 
-			@Override 
-	    	public void handle(ActionEvent event) {
-				border.setLeft(addGridPane1());;
-								
-			}
-		});
-		
-		tema.setOnAction(new EventHandler <ActionEvent>() {
-			@Override 
-	    	public void handle(ActionEvent event) {
-				border.setLeft(addGridPane2());
-			}
-
-		});
-		
-		lektor.setOnAction(new EventHandler <ActionEvent>() {
-			@Override 
-	    	public void handle(ActionEvent event) {
-				border.setLeft(null);
-			}
-		});
-		
-		signOut.setOnAction(new EventHandler <ActionEvent>() {
-			@Override 
-	    	public void handle(ActionEvent event) {
-				
-				
+		try {
+			signIn.setOnAction(new Prihlasenie());
 			
-			}
-		});
+			//hlavne menu
+			student.setOnAction((ActionEvent e) -> {	
+					border.setLeft(addGridPane1());
+			});
+			
+			lektor.setOnAction((ActionEvent e) -> {			
+					border.setLeft(addGridPane2());		
+			});
+			
+			tema.setOnAction((ActionEvent e) -> {	
+					border.setLeft(addGridPane3());
+			});
+			//
+			
+			//odhlasenie a ukoncenie programu
+			signOut.setOnAction((ActionEvent e) -> {	//pouzitie lambda vyrazu, nahradza povodny kod pod 
+					hlavneOkno.close();	
+			});
+			
+			
+			
+			//------------------------------------------------------------------------
+			
+			//vypis bodov studentov pred kurzom s pouzitim lambda vyrazu
+			kurz0.setOnAction ((ActionEvent e) -> {
+					vypis.clear();
+					vypis.appendText("Vypis bodov pred kurzom:\n");
+					vypis.appendText("STUDENT\t\tBODY\n");
+					Iterator<Students> iter = course.studenti[0].iterator();
+					int n = 1; 
+					while(iter.hasNext()) {
+						vypis.appendText( + n + ".		" + iter.next().vypisGUI(0));
+						vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
+						n++;
+						
+					}			
+			});
 		
+			//vypis bodov studentov po 1.kurze s pouzitim lambda vyrazu
+			kurz1.setOnAction((ActionEvent e) -> {
+				vypis.clear();
+				vypis.appendText("Vypis bodov pred kurzom:\n");
+				vypis.appendText("STUDENT\t\tBODY\n");
+				Iterator<Students> iter = course.studenti[1].iterator();
+				int n = 1;
+				while(iter.hasNext()) {
+					vypis.appendText( + n + ".		" + iter.next().vypisGUI(1));
+					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
+					n++;
+				}	
+			});
+			
+			//vypis bodov studentov po 2.kurze s pouzitim lambda vyrazu
+			kurz2.setOnAction((ActionEvent e) -> {
+				vypis.clear();
+				vypis.appendText("Vypis bodov pred kurzom:\n");
+				vypis.appendText("STUDENT\t\tBODY\n");
+				Iterator<Students> iter = course.studenti[2].iterator();
+				int n = 1;
+				while(iter.hasNext()) {
+					vypis.appendText( + n + ".		" + iter.next().vypisGUI(2));
+					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
+					n++;
+				}	
+			});
+			
+			//vypis bodov studentov po 3.kurze s pouzitim lambda vyrazu
+			kurz3.setOnAction((ActionEvent e) -> {
+				vypis.clear();
+				vypis.appendText("Vypis bodov pred kurzom:\n");
+				vypis.appendText("STUDENT\t\tBODY\n");
+				Iterator<Students> iter = course.studenti[3].iterator();
+				int n = 1;
+				while(iter.hasNext()) {
+					vypis.appendText( + n + ".		" + iter.next().vypisGUI(3));
+					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
+					n++;
+				}	
+			});
+					
+			//beh 1.kurzu - spusta lektor
+			beh1.setOnAction((ActionEvent e) -> {
+				course.beh(1);
+				kurz1.setDisable(false);
+				beh2.setDisable(false);
+			});
+			
+			//beh 2.kurzu - spusta lektor
+			beh2.setOnAction((ActionEvent e) -> {
+				course.beh(2);
+				kurz2.setDisable(false);
+				beh3.setDisable(false);
+			});
+			
+			//beh 2.kurzu - spusta lektor
+			beh3.setOnAction((ActionEvent e) -> {
+				course.beh(3);
+				kurz3.setDisable(false);
+			});
+		}
+		catch(Exception e) {
+			System.out.println("Chyba............");
+		}
 		
-		
-		hlavneOkno.setScene(new Scene(loginMenu(), 440, 200));
-		hlavneOkno.show();
 		
 	}
+	
+	//VYTVARANIE TABULIEK A PANELOV
+	//*****************************************************************************************
 	
 	//hlavne prihlasovacie okno
 	private GridPane loginMenu() {
@@ -134,49 +244,16 @@ public class MainGUI extends Application {
 		return loginMenu;
 	}
 	
-	//zoznam predmetov
-	private GridPane addGridPane2() {
-		GridPane grid2 = new GridPane();
-		
-		Label predmety = new Label("Predmety");
-		Button mat = new Button("Matematika");
-		Button inf = new Button("Informatika");
-		
-		predmety.setPrefSize(100, 20);
-		mat.setPrefSize(100, 20);
-		inf.setPrefSize(100, 20);
-		
-		grid2.add(predmety, 0, 0);
-		grid2.add(mat, 0, 1);
-		grid2.add(inf, 0, 2);
-		
-		predmety.setFont(Font.font(16));
-		mat.setFont(Font.font(14));
-		inf.setFont(Font.font(14));
 
-		
-		grid2.setVgap(10);
-	    grid2.setPadding(new Insets(10, 0, 0, 10));
-		return grid2;
-	}
-	
-
-	//zoznam bodov
+	//studenti -> prehlad bodov
 	private GridPane addGridPane1() {
 		GridPane grid1 = new GridPane();
 		
-		Label kurzy = new Label("Body");
-		Button kurz0 = new Button("Pred kurzom");
-		Button kurz1 = new Button("Po 1.kurze");
-		Button kurz2 = new Button("Po 2.kurze");
-		Button kurz3 = new Button("Po 3.kurze");
-		
-		kurzy.setPrefSize(100, 20);
+		kurzy.setPrefSize(110, 20);
 		kurz0.setPrefSize(100, 20);
 		kurz1.setPrefSize(100, 20);
 		kurz2.setPrefSize(100, 20);
 		kurz3.setPrefSize(100, 20);
-		
 		
 		kurzy.setFont(Font.font(16));
 		kurz0.setFont(Font.font(14));
@@ -196,7 +273,60 @@ public class MainGUI extends Application {
 		return grid1;
 	}
 	
+	//lektori -> spustenie kurzov
+	private GridPane addGridPane2() {
+		GridPane grid2 = new GridPane();
+				
+		beh.setPrefSize(110, 20);
+		//beh0.setPrefSize(100, 20);
+		beh1.setPrefSize(100, 20);
+		beh2.setPrefSize(100, 20);
+		beh3.setPrefSize(100, 20);
+		
+		beh.setFont(Font.font(16));
+		//beh0.setFont(Font.font(14));
+		beh1.setFont(Font.font(14));
+		beh2.setFont(Font.font(14));
+		beh3.setFont(Font.font(14));
+		
+		grid2.setVgap(10);
+	    grid2.setPadding(new Insets(10, 0, 0, 10));
+	    
+	    grid2.add(beh, 0, 0);
+	    //grid2.add(beh0, 0, 1);
+	    grid2.add(beh1, 0, 2);
+	    grid2.add(beh2, 0, 3);
+	    grid2.add(beh3, 0, 4);
+	    
+		return grid2;
+	}
 	
+	//temy -> zoznam predmetov
+	private GridPane addGridPane3() {
+		GridPane grid3 = new GridPane();
+		
+		predmety.setPrefSize(100, 20);
+		mat.setPrefSize(100, 20);
+		inf.setPrefSize(100, 20);
+		
+		grid3.add(predmety, 0, 0);
+		grid3.add(mat, 0, 1);
+		grid3.add(inf, 0, 2);
+		
+		predmety.setFont(Font.font(16));
+		mat.setFont(Font.font(14));
+		inf.setFont(Font.font(14));
+
+		
+		grid3.setVgap(10);
+	    grid3.setPadding(new Insets(10, 0, 0, 10));
+		return grid3;
+	}
+	
+
+	
+	
+	//vypis textarea
 	private VBox addVBoxBottom() {
 		VBox vbox = new VBox();
 		vbox.setPadding(new Insets(15, 12, 15, 12));
@@ -216,7 +346,7 @@ public class MainGUI extends Application {
 		return vboxTop;
 	}
 	
-	
+	//menu
 	private HBox addHBoxBottom() {
 		HBox hboxBottom = new HBox();
 		hboxBottom.setPadding(new Insets(15, 12, 15, 12));
@@ -238,6 +368,7 @@ public class MainGUI extends Application {
 	    return hboxBottom;
 	}
 	
+	//nazov kurzu
 	private HBox addHBoxTop() {
 		HBox hboxTop = new HBox();
 		hboxTop.setPadding(new Insets(10, 0, 10, 0));
@@ -252,6 +383,7 @@ public class MainGUI extends Application {
 	    return hboxTop;
 	}
 	
+	//odhlasenie
 	private HBox addHBoxLogOut() {
 		HBox hboxLogOut = new HBox();
 		hboxLogOut.setPadding(new Insets(10, 10, 10, 10));
