@@ -34,8 +34,12 @@ public class MainClass {
 			//--------------------------------------------------------------
 
 		
-		
-		course.inicializacia();
+		try {
+		      course.inicializacia();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		course.vypisLektor();
 		

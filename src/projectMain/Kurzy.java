@@ -3,6 +3,7 @@ package projectMain;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.lang.Exception;
 
 public class Kurzy {
 	
@@ -13,7 +14,7 @@ public class Kurzy {
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
 	
 	
-	public void inicializacia() {
+	public void inicializacia() throws Exception {
 		
 		for (int i = 0; i < 4; i++) {
 			 studenti[i] = new LinkedList<Students>();
@@ -41,6 +42,8 @@ public class Kurzy {
 			lektor[i].naplnBody();
 			lektori.add(lektor[i]);
 		}
+		
+		//lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
 	}
 	
 	

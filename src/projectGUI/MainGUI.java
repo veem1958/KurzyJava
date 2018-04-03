@@ -103,7 +103,16 @@ public class MainGUI extends Application {
 				hlavneOkno.setScene(new Scene(border, 900, 600));
 				hlavneOkno.show();
 				hlavneOkno.centerOnScreen();
-				course.inicializacia();
+				
+				try {
+					  vypis.appendText("\nBeží inicializácia ! \n");
+				      course.inicializacia();
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					vypis.appendText("Chyba je : " + e.getMessage() + "\n");
+				}
+						
 				kurz1.setDisable(true);
 				kurz2.setDisable(true);
 				kurz3.setDisable(true);
