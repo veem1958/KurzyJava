@@ -4,7 +4,7 @@ package projectGUI;
 import javafx.event.*;
 
 import java.util.Iterator;
-
+import java.lang.Exception;
 import javafx.application.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -50,7 +51,7 @@ public class MainGUI extends Application {
 	private Label login = new Label("Prihlasovacie meno: ");
 	private Label password = new Label("Heslo: ");
 	private TextField loginText = new TextField();
-	private TextField passwordText = new TextField();
+	private PasswordField passwordText = new PasswordField();
 	private Button signIn = new Button("Prihlási sa");
 	//
 	
@@ -64,7 +65,6 @@ public class MainGUI extends Application {
 	
 	//lektori
 	Label beh = new Label("Beh kurzov");
-	//Button beh0L = new Button("Pred kurzom");
 	Button beh1 = new Button("1.kurz");
 	Button beh2 = new Button("2.kurz");
 	Button beh3 = new Button("3.kurz");
@@ -84,14 +84,14 @@ public class MainGUI extends Application {
 				
 		hlavneOkno.setTitle("Window");
 		
-		GridPane loginMenu = new GridPane();
+		GridPane loginMenu = new GridPane();		
 		BorderPane border = new BorderPane();
 
 		border.setTop(addVBoxTop());
 		border.setCenter(addVBoxBottom()); 
 		border.setBottom(addHBoxLogOut());
 		
-		hlavneOkno.setScene(new Scene(loginMenu(), 460, 200));
+		hlavneOkno.setScene(new Scene(loginMenu(), 400, 200));
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
 		
@@ -103,7 +103,7 @@ public class MainGUI extends Application {
 				hlavneOkno.setScene(new Scene(border, 900, 600));
 				hlavneOkno.show();
 				hlavneOkno.centerOnScreen();
-				
+
 				try {
 					  vypis.appendText("\nBeží inicializácia ! \n");
 				      course.inicializacia();
@@ -125,7 +125,7 @@ public class MainGUI extends Application {
 			signIn.setOnAction(new Prihlasenie());
 			
 			//hlavne menu
-			student.setOnAction((ActionEvent e) -> {	
+			student.setOnAction((ActionEvent e) -> {		//pouzitie lambda vyrazu
 					border.setLeft(addGridPane1());
 			});
 			
@@ -139,7 +139,7 @@ public class MainGUI extends Application {
 			//
 			
 			//odhlasenie a ukoncenie programu
-			signOut.setOnAction((ActionEvent e) -> {	//pouzitie lambda vyrazu, nahradza povodny kod pod 
+			signOut.setOnAction((ActionEvent e) -> {
 					hlavneOkno.close();	
 			});
 			
@@ -223,8 +223,12 @@ public class MainGUI extends Application {
 				course.beh(3);
 				kurz3.setDisable(false);
 			});
+			
+			
+			
 		}
 		catch(Exception e) {
+			hlavneOkno.close();
 			System.out.println("Chyba............");
 		}
 		
@@ -246,6 +250,7 @@ public class MainGUI extends Application {
 		GridPane.setConstraints(passwordText, 1, 1);
 		GridPane.setConstraints(signIn, 1, 2);
 		
+		signIn.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, null, Insets.EMPTY)));
 		loginMenu.setVgap(10);
 		loginMenu.setHgap(10);
 	    loginMenu.setPadding(new Insets(40, 40, 40, 40));
@@ -287,13 +292,11 @@ public class MainGUI extends Application {
 		GridPane grid2 = new GridPane();
 				
 		beh.setPrefSize(110, 20);
-		//beh0.setPrefSize(100, 20);
 		beh1.setPrefSize(100, 20);
 		beh2.setPrefSize(100, 20);
 		beh3.setPrefSize(100, 20);
 		
 		beh.setFont(Font.font(16));
-		//beh0.setFont(Font.font(14));
 		beh1.setFont(Font.font(14));
 		beh2.setFont(Font.font(14));
 		beh3.setFont(Font.font(14));
@@ -302,7 +305,6 @@ public class MainGUI extends Application {
 	    grid2.setPadding(new Insets(10, 0, 0, 10));
 	    
 	    grid2.add(beh, 0, 0);
-	    //grid2.add(beh0, 0, 1);
 	    grid2.add(beh1, 0, 2);
 	    grid2.add(beh2, 0, 3);
 	    grid2.add(beh3, 0, 4);
@@ -333,7 +335,6 @@ public class MainGUI extends Application {
 	}
 	
 
-	
 	
 	//vypis textarea
 	private VBox addVBoxBottom() {

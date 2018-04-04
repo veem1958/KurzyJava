@@ -17,6 +17,7 @@ public class Students implements Passwords {
 		this.inf = info;
 	}
 	
+	//prve pridelenie bodom studentom na zaklade vysledkov z maturity 
 	public void naplnBody() {
 		mat.setMarks(this);
 		inf.setMarks(this);
@@ -36,7 +37,7 @@ public class Students implements Passwords {
 		else maturitaI = "nie";
 		
 		System.out.println("Mat: " + mat.getMarks(this, kurz) + "	Inf: " + inf.getMarks(this, kurz)
-								+ ",	Suma: "	+ this.getSuma(kurz) + "	Maturita: " + maturitaM + ", " + maturitaI);
+								+ "		Suma: "	+ this.getSuma(kurz) + "	Maturita: " + maturitaM + ", " + maturitaI);
 	}
 	
 	//vypis GUI

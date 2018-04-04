@@ -43,7 +43,7 @@ public class Kurzy {
 			lektori.add(lektor[i]);
 		}
 		
-		//lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
+		lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
 	}
 	
 	
@@ -71,7 +71,6 @@ public class Kurzy {
 	public void vypisStudent(int kurz) {
 		
 			int n = 0;
-			
 			Iterator<Students> iter = studenti[kurz].iterator();  
 			
 			System.out.println(kurz + ".kurz: ");	
@@ -87,7 +86,6 @@ public class Kurzy {
 	public void vypisLektor() {
 		
 		int n = 0;
-		
 		Iterator<Teachers> iter = lektori.iterator();  
 		
 		while(iter.hasNext()) {
@@ -95,7 +93,29 @@ public class Kurzy {
 			iter.next().vypis(); 
 			n++;
 		}
-		
 	}
-
+	
+	//hesla
+	public void hesla() {
+		
+		Iterator<Students> iter = studenti[0].iterator();  
+		
+		while(iter.hasNext()) {			
+			iter.next().setPassword(); 
+		}
+	}
+	
+	public void vypisHesla() {
+		
+		int n = 0;
+		Iterator<Students> iter = studenti[0].iterator();  
+		
+		while(iter.hasNext()) {
+			System.out.print("Heslo[" + n + "]	"); 
+			System.out.println(iter.next().getPassword());
+			n++;
+		}		
+	}
+	
+	
 }

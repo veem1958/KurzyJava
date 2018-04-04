@@ -1,38 +1,16 @@
 package projectMain;
 
 import java.util.*;
-
+import java.lang.Exception;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class MainClass {
-
-			//public List<Students> studenti = new LinkedList<>();
-	
 	
 	public static void main(String[] args) {
 		
 		Kurzy course = new Kurzy();
-		
-		
-			//----------------------------------------------------------
-			/*
-			for (int i = 0; i < 100; i++) {
-				studenti.add(student[i]);
-			}
-			
-			int n = 0;
-			
-			Iterator<Students> iter = studenti.iterator();  
-			while(iter.hasNext()) {
-				System.out.print(n + "	");
-				iter.next().vypis(0); 
-				n++;
-			}
-			*/
-			//--------------------------------------------------------------
-
 		
 		try {
 		      course.inicializacia();
@@ -40,6 +18,7 @@ public class MainClass {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		
 		course.vypisLektor();
 		
@@ -61,14 +40,12 @@ public class MainClass {
 		
 		course.beh(3);
 		course.vypisStudent(3);
-/*
-		//skuska hesla
-		System.out.println("\n\n\nheslo: ");
-		student[2].setPassword();
-		System.out.print(student[2].getPassword());
+
 		
-		System.out.println("\n\n\n");
-		*/
+	/*	skuska hesla
+		course.hesla();
+		course.vypisHesla();
+	*/
 		
 	
 		
