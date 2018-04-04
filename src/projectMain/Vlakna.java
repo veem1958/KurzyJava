@@ -1,5 +1,5 @@
 package projectMain;
 
-public class Vlakna {
+public class Vlakna extends Thread {
 
 }

@@ -77,6 +77,9 @@ public class MainGUI extends Application {
 	//
 	
 	Kurzy course = new Kurzy();
+	Thread vb1 = new Thread(new VlaknoBeh(1));   // vl·kno 1 pre beh 1. kurzu
+	Thread vb2 = new Thread(new VlaknoBeh(2));   // vl·kno 2 pre beh 2. kurzu
+	Thread vb3 = new Thread(new VlaknoBeh(3));   // vl·kno 3 pre beh 3. kurzu
 	
 	
 	//main-----------------------------------------------------------------------
@@ -107,10 +110,11 @@ public class MainGUI extends Application {
 				try {
 					  vypis.appendText("\nBeûÌ inicializ·cia ! \n");
 				      course.inicializacia();
+					  vypis.appendText("Inicializ·cia ukonËen· ! \n");
 				}
 				catch (Exception e) {
 					e.printStackTrace();
-					vypis.appendText("Chyba je : " + e.getMessage() + "\n");
+					vypis.appendText("Chyba je : " + e.toString() + "\n");
 				}
 						
 				kurz1.setDisable(true);
@@ -165,7 +169,7 @@ public class MainGUI extends Application {
 			//vypis bodov studentov po 1.kurze s pouzitim lambda vyrazu
 			kurz1.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov pred kurzom:\n");
+				vypis.appendText("Vypis bodov po 1.kurze:\n");
 				vypis.appendText("STUDENT\t\tBODY\n");
 				Iterator<Students> iter = course.studenti[1].iterator();
 				int n = 1;
@@ -179,7 +183,7 @@ public class MainGUI extends Application {
 			//vypis bodov studentov po 2.kurze s pouzitim lambda vyrazu
 			kurz2.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov pred kurzom:\n");
+				vypis.appendText("Vypis bodov po 2.kurze:\n");
 				vypis.appendText("STUDENT\t\tBODY\n");
 				Iterator<Students> iter = course.studenti[2].iterator();
 				int n = 1;
@@ -193,7 +197,7 @@ public class MainGUI extends Application {
 			//vypis bodov studentov po 3.kurze s pouzitim lambda vyrazu
 			kurz3.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov pred kurzom:\n");
+				vypis.appendText("Vypis bodov po 3.kurze:\n");
 				vypis.appendText("STUDENT\t\tBODY\n");
 				Iterator<Students> iter = course.studenti[3].iterator();
 				int n = 1;
@@ -206,21 +210,24 @@ public class MainGUI extends Application {
 					
 			//beh 1.kurzu - spusta lektor
 			beh1.setOnAction((ActionEvent e) -> {
-				course.beh(1);
+				//course.beh(1);
+				vb1.start();               //  spusti beh 1 v novom vlakne
 				kurz1.setDisable(false);
 				beh2.setDisable(false);
 			});
 			
 			//beh 2.kurzu - spusta lektor
 			beh2.setOnAction((ActionEvent e) -> {
-				course.beh(2);
+				//course.beh(2);
+				vb2.start();               //  spusti beh 2 v novom vlakne
 				kurz2.setDisable(false);
 				beh3.setDisable(false);
 			});
 			
-			//beh 2.kurzu - spusta lektor
+			//beh 3.kurzu - spusta lektor
 			beh3.setOnAction((ActionEvent e) -> {
-				course.beh(3);
+				//course.beh(3);
+				vb3.start();
 				kurz3.setDisable(false);
 			});
 			
@@ -404,7 +411,16 @@ public class MainGUI extends Application {
 		return hboxLogOut;
 	}
 
-	
+	// pouzitie Nite - Vlakna - Threads s parametrom behu - t˝m p·dom staËÌ jedna trieda ale bude treba 3 inötancie pre kaûd˝ beh zvl·öù 
+	class VlaknoBeh implements Runnable {
+        private int k ;
+        public VlaknoBeh(int s) { this.k = s; }
+		public void run() {
+			System.out.println("BeûÌ kurz " + this.k +" vo vl·kne !\n");
+			course.beh(this.k);
+			System.out.println("Kurz " + this.k + " ukonËen˝ !\n");
+		}
+	}	
 
 	public static void main(String[] args) {
 		launch(args);		

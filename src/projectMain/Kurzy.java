@@ -43,7 +43,7 @@ public class Kurzy {
 			lektori.add(lektor[i]);
 		}
 		
-		lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
+		//lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
 	}
 	
 	
@@ -55,7 +55,7 @@ public class Kurzy {
 		double bodyMat = lektor[mat].mat.getMarks(lektor[mat]);	//zistenie bodov lektora z daneho predmetu
 		double bodyInf = lektor[inf].inf.getMarks(lektor[inf]);
 		System.out.println("Mat: ucitel: " + mat + " - " + bodyMat);
-		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n\n");
+		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n");
 				
 		
 		for (int i = 0; i < 100; i++) {
