@@ -1,15 +1,17 @@
 package projectMain;
 
+import java.io.Serializable;
 import java.util.Observable;
 
 import java.util.Observer;
 import java.util.Random;
 
-public class Students implements Passwords {
+public class Students implements Passwords, Serializable {
 	
-	protected Subjects mat;
-	protected Subjects inf;
+	transient protected Subjects mat;
+	transient protected Subjects inf;
 	private double suma;		//suma bodov z mat aj info za kazdy kurz
+	private String meno;
 	String text = "";
 	
 	public Students(Subjects mat, Subjects info) {
@@ -36,8 +38,8 @@ public class Students implements Passwords {
 			maturitaI = "ano";
 		else maturitaI = "nie";
 		
-		System.out.println("Mat: " + mat.getMarks(this, kurz) + "	Inf: " + inf.getMarks(this, kurz)
-								+ "		Suma: "	+ this.getSuma(kurz) + "	Maturita: " + maturitaM + ", " + maturitaI);
+		System.out.println(this.getMeno() + "\t Mat: " + mat.getMarks(this, kurz) + "	Inf: " + inf.getMarks(this, kurz)
+								+ "\t  Spolu: "	+ this.getSuma(kurz) + "	  Maturita: " + maturitaM + ", " + maturitaI);
 	}
 	
 	//vypis GUI
@@ -54,14 +56,18 @@ public class Students implements Passwords {
 			maturitaI = "ano";
 		else maturitaI = "nie";
 		
-		text = ("	Mat: " + String.format("%05.2f", (mat.getMarks(this, kurz)))
-					+ "		Inf: " + String.format("%05.2f", (inf.getMarks(this, kurz)))
-					+ "		Spolu: "	+ String.format("%05.2f", (this.getSuma(kurz)))
-					+ "		Maturita:  " + maturitaM + ",	" + maturitaI + "\n");
+		String pommeno = this.getMeno();
+						
+		text = (String.format("%-16s", pommeno) + "\t Mat:  " + String.format("%-6.2f", (mat.getMarks(this, kurz)))
+					+ "\t Inf:  " + String.format("%-6.2f", (inf.getMarks(this, kurz)))
+					+ "\t Spolu:  "	+ String.format("%-6.2f", (this.getSuma(kurz)))
+					+ "		Maturita:  " + maturitaM + ",  " + maturitaI + "\n");
 		
 		return this.text;
 	}
 
+	
+	
 	//pridavanie bodov studentom po jednotlivych kurzoch
 	public void addBody(int kurz, double bodyMat, double bodyInf) {
 		mat.addMarks(this, kurz, bodyMat);
@@ -77,9 +83,19 @@ public class Students implements Passwords {
 		return this.suma;
 	}
 	
+	// zapis meno studenta
+	public void setMeno(int poradie) {
+		this.meno = "MenoStud_" + poradie;
+	}
+	
+	public String getMeno() {
+		return this.meno;
+	}	
+	
 	
 	//**************************************
 	//hesla
+	
 	private String password = "";
 	
 	public void setPassword() {
@@ -96,6 +112,7 @@ public class Students implements Passwords {
 	public String getPassword() {		
 		return this.password;
 	}
-	
 
+	
+	
 }

@@ -29,11 +29,11 @@ import javafx.stage.Stage;
 
 import projectMain.Kurzy;
 import projectMain.Students;
-import projectMain.Matematika;
-import projectMain.Informatika;
-import projectMain.Teachers;
-import projectMain.Passwords;
-import projectMain.Subjects;
+//import projectMain.Matematika;
+//import projectMain.Informatika;
+//import projectMain.Teachers;
+//import projectMain.Passwords;
+//import projectMain.Subjects;
 
 
 public class MainGUI extends Application {
@@ -81,6 +81,7 @@ public class MainGUI extends Application {
 	Thread vb2 = new Thread(new VlaknoBeh(2));   // vl·kno 2 pre beh 2. kurzu
 	Thread vb3 = new Thread(new VlaknoBeh(3));   // vl·kno 3 pre beh 3. kurzu
 	
+	String hlavicka = "STUDENT\t\t\t\t\t BODY\n";
 	
 	//main-----------------------------------------------------------------------
 	public void start(Stage hlavneOkno) {
@@ -103,25 +104,56 @@ public class MainGUI extends Application {
 		class Prihlasenie implements EventHandler<ActionEvent> {
 			@Override
 			public void handle(ActionEvent event) { 
+				
+				//hesla
+				String uzivatel = "";
+				String heslo = "";
+				uzivatel = loginText.getText();
+				heslo = passwordText.getText();
+				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
+					hlavneOkno.setScene(new Scene(border, 900, 600));
+					hlavneOkno.show();
+					hlavneOkno.centerOnScreen();
+					
+					try {
+						  vypis.appendText("\nBeûÌ inicializ·cia ! \n");
+					      course.inicializacia();
+					      vypis.appendText("Inicializ·cia ukonËen· ! \n");
+					}
+					catch (Exception e) {
+						e.printStackTrace();
+						vypis.appendText("Chyba je : " + e.getMessage() + "\n");
+					}
+							
+					kurz1.setDisable(true);
+					kurz2.setDisable(true);
+					kurz3.setDisable(true);
+					beh2.setDisable(true);
+					beh3.setDisable(true);
+				}
+				else {
+					System.out.println("Chyba prihl·senia");
+				}
+				/*
 				hlavneOkno.setScene(new Scene(border, 900, 600));
 				hlavneOkno.show();
 				hlavneOkno.centerOnScreen();
-
+				
 				try {
 					  vypis.appendText("\nBeûÌ inicializ·cia ! \n");
 				      course.inicializacia();
-					  vypis.appendText("Inicializ·cia ukonËen· ! \n");
+				      vypis.appendText("Inicializ·cia ukonËen· ! \n");
 				}
 				catch (Exception e) {
 					e.printStackTrace();
-					vypis.appendText("Chyba je : " + e.toString() + "\n");
+					vypis.appendText("Chyba je : " + e.getMessage() + "\n");
 				}
 						
 				kurz1.setDisable(true);
 				kurz2.setDisable(true);
 				kurz3.setDisable(true);
 				beh2.setDisable(true);
-				beh3.setDisable(true);
+				beh3.setDisable(true);*/
 			}
 		}
 		
@@ -144,7 +176,27 @@ public class MainGUI extends Application {
 			
 			//odhlasenie a ukoncenie programu
 			signOut.setOnAction((ActionEvent e) -> {
-					hlavneOkno.close();	
+				System.out.println("vlakno 1 stav : " + vb1.getState());	
+				System.out.println("vlakno 2 stav : " + vb2.getState());	
+				System.out.println("vlakno 3 stav : " + vb3.getState());	
+				/*
+				passwordText.clear();
+				hlavneOkno.setScene(new Scene(loginMenu(), 400, 200));  //---
+				hlavneOkno.show();
+				hlavneOkno.centerOnScreen();
+				
+				String uzivatel = "";
+				String heslo = "";
+				uzivatel = loginText.getText();
+				heslo = passwordText.getText();
+				
+				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
+					hlavneOkno.setScene(new Scene(border, 900, 600));
+					hlavneOkno.show();
+					hlavneOkno.centerOnScreen();
+				}
+				*/
+				hlavneOkno.close();	
 			});
 			
 			
@@ -155,11 +207,11 @@ public class MainGUI extends Application {
 			kurz0.setOnAction ((ActionEvent e) -> {
 					vypis.clear();
 					vypis.appendText("Vypis bodov pred kurzom:\n");
-					vypis.appendText("STUDENT\t\tBODY\n");
+					vypis.appendText(hlavicka);
 					Iterator<Students> iter = course.studenti[0].iterator();
 					int n = 1; 
 					while(iter.hasNext()) {
-						vypis.appendText( + n + ".		" + iter.next().vypisGUI(0));
+						vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(0));
 						vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 						n++;
 						
@@ -169,12 +221,12 @@ public class MainGUI extends Application {
 			//vypis bodov studentov po 1.kurze s pouzitim lambda vyrazu
 			kurz1.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov po 1.kurze:\n");
-				vypis.appendText("STUDENT\t\tBODY\n");
+				vypis.appendText("Vypis bodov po 1. kurze:\n");
+				vypis.appendText(hlavicka);
 				Iterator<Students> iter = course.studenti[1].iterator();
 				int n = 1;
 				while(iter.hasNext()) {
-					vypis.appendText( + n + ".		" + iter.next().vypisGUI(1));
+					vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(1));
 					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 					n++;
 				}	
@@ -183,12 +235,12 @@ public class MainGUI extends Application {
 			//vypis bodov studentov po 2.kurze s pouzitim lambda vyrazu
 			kurz2.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov po 2.kurze:\n");
-				vypis.appendText("STUDENT\t\tBODY\n");
+				vypis.appendText("Vypis bodov po 2. kurze:\n");
+				vypis.appendText(hlavicka);
 				Iterator<Students> iter = course.studenti[2].iterator();
 				int n = 1;
 				while(iter.hasNext()) {
-					vypis.appendText( + n + ".		" + iter.next().vypisGUI(2));
+					vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(2));
 					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 					n++;
 				}	
@@ -197,12 +249,12 @@ public class MainGUI extends Application {
 			//vypis bodov studentov po 3.kurze s pouzitim lambda vyrazu
 			kurz3.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov po 3.kurze:\n");
-				vypis.appendText("STUDENT\t\tBODY\n");
+				vypis.appendText("Vypis bodov po 3. kurze:\n");
+				vypis.appendText(hlavicka);
 				Iterator<Students> iter = course.studenti[3].iterator();
 				int n = 1;
 				while(iter.hasNext()) {
-					vypis.appendText( + n + ".		" + iter.next().vypisGUI(3));
+					vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(3));
 					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 					n++;
 				}	
@@ -214,6 +266,7 @@ public class MainGUI extends Application {
 				vb1.start();               //  spusti beh 1 v novom vlakne
 				kurz1.setDisable(false);
 				beh2.setDisable(false);
+				beh1.setDisable(true);
 			});
 			
 			//beh 2.kurzu - spusta lektor
@@ -222,14 +275,18 @@ public class MainGUI extends Application {
 				vb2.start();               //  spusti beh 2 v novom vlakne
 				kurz2.setDisable(false);
 				beh3.setDisable(false);
+				beh2.setDisable(true);
 			});
 			
-			//beh 3.kurzu - spusta lektor
+			//beh 2.kurzu - spusta lektor
 			beh3.setOnAction((ActionEvent e) -> {
 				//course.beh(3);
 				vb3.start();
 				kurz3.setDisable(false);
+				beh3.setDisable(true);
 			});
+			
+			
 			
 			
 			
@@ -410,17 +467,23 @@ public class MainGUI extends Application {
 		
 		return hboxLogOut;
 	}
-
+	
 	// pouzitie Nite - Vlakna - Threads s parametrom behu - t˝m p·dom staËÌ jedna trieda ale bude treba 3 inötancie pre kaûd˝ beh zvl·öù 
 	class VlaknoBeh implements Runnable {
-        private int k ;
-        public VlaknoBeh(int s) { this.k = s; }
-		public void run() {
-			System.out.println("BeûÌ kurz " + this.k +" vo vl·kne !\n");
-			course.beh(this.k);
-			System.out.println("Kurz " + this.k + " ukonËen˝ !\n");
+		private int k ;
+		
+		public VlaknoBeh(int s) { 
+			this.k = s;
 		}
+		
+   		public void run() {
+   			System.out.println("BeûÌ kurz " + this.k +" vo vl·kne !\n");
+   			course.beh(this.k);
+   			System.out.println("Kurz " + this.k + " ukonËen˝ !\n");
+   		}
 	}	
+
+	
 
 	public static void main(String[] args) {
 		launch(args);		

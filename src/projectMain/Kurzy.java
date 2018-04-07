@@ -1,8 +1,13 @@
 package projectMain;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.Exception;
 
 public class Kurzy {
@@ -25,6 +30,7 @@ public class Kurzy {
 			student[i] = new Students(new Matematika(false), new Informatika(false));
 			student[i].naplnBody();
 			student[i].setSuma(0);
+			student[i].setMeno(i+1);
 			studenti[0].add(student[i]);
 		}
 		
@@ -33,6 +39,7 @@ public class Kurzy {
 			student[i] = new Students(new Matematika(true), new Informatika(true));
 			student[i].naplnBody();		
 			student[i].setSuma(0);
+			student[i].setMeno(i+1);
 			studenti[0].add(student[i]);
 		}
 				
@@ -55,15 +62,41 @@ public class Kurzy {
 		double bodyMat = lektor[mat].mat.getMarks(lektor[mat]);	//zistenie bodov lektora z daneho predmetu
 		double bodyInf = lektor[inf].inf.getMarks(lektor[inf]);
 		System.out.println("Mat: ucitel: " + mat + " - " + bodyMat);
-		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n");
-				
-		
+		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n\n");
+						
 		for (int i = 0; i < 100; i++) {
 			student[i].addBody(kurz, bodyMat, bodyInf);
 			student[i].setSuma(kurz);
 			studenti[kurz].add(student[i]);
 		}	
-				
+			
+		// zotriedi podla celkoveho poctu bodov Mat+Inf	
+		Collections.sort(studenti[kurz], Collections.reverseOrder(new SortbySuma()));
+		//vypisStudent(kurz);  // konzola
+		
+		if (kurz == 3) {
+			try {
+				zapisObjekt(kurz);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	
+	public void zapisObjekt(int kurz) throws FileNotFoundException, IOException {
+	
+		File sub = new File("object.txt");
+		sub.exists();
+		
+		ObjectOutputStream s = new ObjectOutputStream(new FileOutputStream("object.txt"));
+		s.writeObject(studenti[kurz]);
+		s.flush();
+		System.out.println("objekt 3.kurz zapisany");
+		s.close();
+		System.out.println("subor zatvoreny");
 	}
 	
 	
@@ -116,6 +149,5 @@ public class Kurzy {
 			n++;
 		}		
 	}
-	
 	
 }
