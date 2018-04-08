@@ -1,14 +1,19 @@
 package projectMain;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.Exception;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class Kurzy {
 	
@@ -16,6 +21,7 @@ public class Kurzy {
 	Teachers[] lektor = new Teachers[5];
 	
 	public LinkedList<Students>[] studenti = new LinkedList[4];
+	public LinkedList<Students> studentivysl = new LinkedList();
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
 	
 	
@@ -51,6 +57,16 @@ public class Kurzy {
 		}
 		
 		//lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
+
+		// pokus o nacitanie vysledkov ako objektu zo suboru 		
+		try {
+			nacitajObjekt();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	
@@ -70,10 +86,11 @@ public class Kurzy {
 			studenti[kurz].add(student[i]);
 		}	
 			
-		// zotriedi podla celkoveho poctu bodov Mat+Inf	
+		// zotriedi podla celkoveho poctu bodov Suma = Mat+Inf	
 		Collections.sort(studenti[kurz], Collections.reverseOrder(new SortbySuma()));
 		//vypisStudent(kurz);  // konzola
 		
+		// zapise do suboru celkove vysledky cez serializaciu objektu
 		if (kurz == 3) {
 			try {
 				zapisObjekt(kurz);
@@ -86,17 +103,54 @@ public class Kurzy {
 	}
 	
 	
+	// zapise vysledky kurzu studentov do suboru cez serializaciu objektu
 	public void zapisObjekt(int kurz) throws FileNotFoundException, IOException {
+		try {
+			DateFormat formatData = new SimpleDateFormat("yyyyMMddHHmm");
+			Date datum = new Date();
+			String datumtxt = formatData.format(datum);
+			String menosub = "Vysledok" + "_" + datumtxt + ".txt";
+
+			System.out.println("nazov suboru bude : " + menosub);
+
+			ObjectOutputStream s = new ObjectOutputStream(new FileOutputStream(menosub));
+			s.writeObject(studenti[kurz]);
+			s.flush();
+			System.out.println("Výsledok 3.kurzu uložený do súboru - serializácia.");
+			s.close();
+			System.out.println("Súbor zatvorený.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
-		File sub = new File("object.txt");
-		sub.exists();
+	
+	// nacita vysledky kurzu studentov zo suboru do objektu cez serializaciu
+	public void nacitajObjekt() throws FileNotFoundException, IOException, ClassNotFoundException {
+		try {
+			studentivysl = new LinkedList<Students>();
+			String menosub = "Vysledok_201804081100.txt";
+			ObjectInputStream v = new ObjectInputStream(new FileInputStream(menosub));
+			studentivysl = (LinkedList<Students>) v.readObject();
+			System.out.println("Objekt naèítaný.");
+			v.close();
+			System.out.println("Poèet študentov v naèítanom objekte : " + studentivysl.size());
+			
+			
+			int n = 0;
+			Iterator<Students> iter = studentivysl.iterator();  
+			
+			while(iter.hasNext()) {
+				System.out.print("Student[" + n + "]	");
+				iter.next().vypisvysl();
+				n++;
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		ObjectOutputStream s = new ObjectOutputStream(new FileOutputStream("object.txt"));
-		s.writeObject(studenti[kurz]);
-		s.flush();
-		System.out.println("objekt 3.kurz zapisany");
-		s.close();
-		System.out.println("subor zatvoreny");
 	}
 	
 	

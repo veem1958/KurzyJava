@@ -42,6 +42,14 @@ public class Students implements Passwords, Serializable {
 								+ "\t  Spolu: "	+ this.getSuma(kurz) + "	  Maturita: " + maturitaM + ", " + maturitaI);
 	}
 	
+
+	public void vypisvysl() {
+	
+		System.out.println(this.getMeno() + "\t Body spolu: "	+ this.getSuma(0) );
+	}
+	
+	
+	
 	//vypis GUI
 	public String vypisGUI(int kurz) {
 		

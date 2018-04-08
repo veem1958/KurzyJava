@@ -84,7 +84,7 @@ public class MainGUI extends Application {
 	String hlavicka = "STUDENT\t\t\t\t\t BODY\n";
 	
 	//main-----------------------------------------------------------------------
-	public void start(Stage hlavneOkno) {
+	public void start(Stage hlavneOkno) throws Exception {
 				
 		hlavneOkno.setTitle("Window");
 		
@@ -95,7 +95,14 @@ public class MainGUI extends Application {
 		border.setCenter(addVBoxBottom()); 
 		border.setBottom(addHBoxLogOut());
 		
-		hlavneOkno.setScene(new Scene(loginMenu(), 400, 200));
+		//hlavneOkno.setScene(new Scene(border, 900, 600));
+		Scene hlavnascena = new Scene(border, 900, 600);
+		Scene loginscena = new Scene(loginMenu(), 400, 200);
+		hlavneOkno.setScene(hlavnascena);
+		hlavneOkno.show();
+		hlavneOkno.centerOnScreen();
+		Thread.sleep(3000);				// len spomalenie 3 sek. pri prepnuti okien
+		hlavneOkno.setScene(loginscena);
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
 		
@@ -110,11 +117,14 @@ public class MainGUI extends Application {
 				String heslo = "";
 				uzivatel = loginText.getText();
 				heslo = passwordText.getText();
+				// tu este doplnit prihlasovanie lektora  a jeho login a heslo
 				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
-					hlavneOkno.setScene(new Scene(border, 900, 600));
+					//hlavneOkno.setScene(new Scene(border, 900, 600));
+					hlavneOkno.setScene(hlavnascena);
 					hlavneOkno.show();
 					hlavneOkno.centerOnScreen();
 					
+					// inicializ·ciu presun˙ù na button aby sa po kaûdom prihl·senÌ nesp˙öùala automaticky 
 					try {
 						  vypis.appendText("\nBeûÌ inicializ·cia ! \n");
 					      course.inicializacia();
@@ -196,7 +206,13 @@ public class MainGUI extends Application {
 					hlavneOkno.centerOnScreen();
 				}
 				*/
-				hlavneOkno.close();	
+				
+				hlavneOkno.hide();	
+				hlavneOkno.setScene(loginscena);
+				hlavneOkno.show();
+				hlavneOkno.centerOnScreen();
+				
+				//hlavneOkno.close();	
 			});
 			
 			
@@ -415,8 +431,7 @@ public class MainGUI extends Application {
 	private VBox addVBoxTop() {
 		VBox vboxTop = new VBox();
 		vboxTop.getChildren().addAll(addHBoxTop());
-		vboxTop.getChildren().addAll(addHBoxBottom());
-		
+		vboxTop.getChildren().addAll(addHBoxBottom());		
 		return vboxTop;
 	}
 	
