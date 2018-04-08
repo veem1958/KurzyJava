@@ -29,11 +29,6 @@ import javafx.stage.Stage;
 
 import projectMain.Kurzy;
 import projectMain.Students;
-//import projectMain.Matematika;
-//import projectMain.Informatika;
-//import projectMain.Teachers;
-//import projectMain.Passwords;
-//import projectMain.Subjects;
 
 
 public class MainGUI extends Application {
@@ -45,7 +40,6 @@ public class MainGUI extends Application {
 	private Button tema = new Button("TÈmy");
 	private Button signOut = new Button("Odhl·siù sa");
 	private TextArea vypis = new TextArea();
-	//private ScrollPane scrol = new ScrollPane(vypis);
 	
 	//
 	private Label login = new Label("Prihlasovacie meno: ");
@@ -101,7 +95,7 @@ public class MainGUI extends Application {
 		hlavneOkno.setScene(hlavnascena);
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
-		Thread.sleep(3000);				// len spomalenie 3 sek. pri prepnuti okien
+		Thread.sleep(1000);				// len spomalenie 3 sek. pri prepnuti okien
 		hlavneOkno.setScene(loginscena);
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
@@ -119,7 +113,6 @@ public class MainGUI extends Application {
 				heslo = passwordText.getText();
 				// tu este doplnit prihlasovanie lektora  a jeho login a heslo
 				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
-					//hlavneOkno.setScene(new Scene(border, 900, 600));
 					hlavneOkno.setScene(hlavnascena);
 					hlavneOkno.show();
 					hlavneOkno.centerOnScreen();
@@ -144,26 +137,6 @@ public class MainGUI extends Application {
 				else {
 					System.out.println("Chyba prihl·senia");
 				}
-				/*
-				hlavneOkno.setScene(new Scene(border, 900, 600));
-				hlavneOkno.show();
-				hlavneOkno.centerOnScreen();
-				
-				try {
-					  vypis.appendText("\nBeûÌ inicializ·cia ! \n");
-				      course.inicializacia();
-				      vypis.appendText("Inicializ·cia ukonËen· ! \n");
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					vypis.appendText("Chyba je : " + e.getMessage() + "\n");
-				}
-						
-				kurz1.setDisable(true);
-				kurz2.setDisable(true);
-				kurz3.setDisable(true);
-				beh2.setDisable(true);
-				beh3.setDisable(true);*/
 			}
 		}
 		
@@ -189,24 +162,7 @@ public class MainGUI extends Application {
 				System.out.println("vlakno 1 stav : " + vb1.getState());	
 				System.out.println("vlakno 2 stav : " + vb2.getState());	
 				System.out.println("vlakno 3 stav : " + vb3.getState());	
-				/*
-				passwordText.clear();
-				hlavneOkno.setScene(new Scene(loginMenu(), 400, 200));  //---
-				hlavneOkno.show();
-				hlavneOkno.centerOnScreen();
-				
-				String uzivatel = "";
-				String heslo = "";
-				uzivatel = loginText.getText();
-				heslo = passwordText.getText();
-				
-				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
-					hlavneOkno.setScene(new Scene(border, 900, 600));
-					hlavneOkno.show();
-					hlavneOkno.centerOnScreen();
-				}
-				*/
-				
+				passwordText.clear();				
 				hlavneOkno.hide();	
 				hlavneOkno.setScene(loginscena);
 				hlavneOkno.show();
@@ -302,9 +258,7 @@ public class MainGUI extends Application {
 				beh3.setDisable(true);
 			});
 			
-			
-			
-			
+						
 			
 		}
 		catch(Exception e) {
@@ -330,6 +284,7 @@ public class MainGUI extends Application {
 		GridPane.setConstraints(passwordText, 1, 1);
 		GridPane.setConstraints(signIn, 1, 2);
 		
+		loginMenu.setBackground(new Background(new BackgroundFill(Color.PALETURQUOISE, null, Insets.EMPTY)));
 		signIn.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, null, Insets.EMPTY)));
 		loginMenu.setVgap(10);
 		loginMenu.setHgap(10);
@@ -479,6 +434,7 @@ public class MainGUI extends Application {
 		hboxLogOut.setAlignment(Pos.BOTTOM_RIGHT);
 		
 		hboxLogOut.getChildren().addAll(signOut);
+		signOut.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, null, Insets.EMPTY)));
 		
 		return hboxLogOut;
 	}
