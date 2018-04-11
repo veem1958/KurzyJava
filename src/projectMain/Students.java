@@ -48,6 +48,16 @@ public class Students implements Passwords, Serializable {
 		System.out.println(this.getMeno() + "\t Body spolu: "	+ this.getSuma(0) );
 	}
 	
+
+	public String vypisvyslGUI() {
+		
+		String pommeno = this.getMeno();
+		
+		text = (String.format("%-16s", pommeno) + "\t Spolu:  "	+ String.format("%-6.2f", (this.getSuma(0))) + "\n");
+		
+		return this.text;
+	}
+	
 	
 	
 	//vypis GUI

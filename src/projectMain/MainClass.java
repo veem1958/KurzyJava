@@ -1,10 +1,6 @@
 package projectMain;
 
-//import java.util.*;
 import java.lang.Exception;
-//import java.util.LinkedList;
-//import java.util.List;
-
 
 public class MainClass {
 	

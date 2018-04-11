@@ -57,16 +57,7 @@ public class Kurzy {
 		}
 		
 		//lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
-
-		// pokus o nacitanie vysledkov ako objektu zo suboru 		
-		try {
-			nacitajObjekt();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
+				
 	}
 	
 	
@@ -126,26 +117,15 @@ public class Kurzy {
 	
 	
 	// nacita vysledky kurzu studentov zo suboru do objektu cez serializaciu
-	public void nacitajObjekt() throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void nacitajObjekt(String s) throws FileNotFoundException, IOException, ClassNotFoundException {
 		try {
 			studentivysl = new LinkedList<Students>();
-			String menosub = "Vysledok_201804081100.txt";
+			String menosub = s;
 			ObjectInputStream v = new ObjectInputStream(new FileInputStream(menosub));
 			studentivysl = (LinkedList<Students>) v.readObject();
 			System.out.println("Objekt naèítaný.");
 			v.close();
 			System.out.println("Poèet študentov v naèítanom objekte : " + studentivysl.size());
-			
-			
-			int n = 0;
-			Iterator<Students> iter = studentivysl.iterator();  
-			
-			while(iter.hasNext()) {
-				System.out.print("Student[" + n + "]	");
-				iter.next().vypisvysl();
-				n++;
-			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -188,7 +168,7 @@ public class Kurzy {
 		Iterator<Students> iter = studenti[0].iterator();  
 		
 		while(iter.hasNext()) {			
-			iter.next().setPassword(); 
+			iter.next().setPassword();	//tieto hesla zatial nepouzite v GUI 
 		}
 	}
 	

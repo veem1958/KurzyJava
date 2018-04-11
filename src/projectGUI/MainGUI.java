@@ -4,6 +4,7 @@ package projectGUI;
 import javafx.event.*;
 
 import java.util.Iterator;
+import java.io.File;
 import java.lang.Exception;
 import javafx.application.*;
 import javafx.geometry.Insets;
@@ -15,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -25,6 +28,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 import projectMain.Kurzy;
@@ -59,9 +64,11 @@ public class MainGUI extends Application {
 	
 	//lektori
 	Label beh = new Label("Beh kurzov");
+	Button novy = new Button("nová skupina");
 	Button beh1 = new Button("1.kurz");
 	Button beh2 = new Button("2.kurz");
 	Button beh3 = new Button("3.kurz");
+	Button stare = new Button("staré výsledky");
 	//
 	
 	//temy
@@ -80,7 +87,7 @@ public class MainGUI extends Application {
 	//main-----------------------------------------------------------------------
 	public void start(Stage hlavneOkno) throws Exception {
 				
-		hlavneOkno.setTitle("Window");
+		hlavneOkno.setTitle("Prípravný kury FIIT STU");
 		
 		GridPane loginMenu = new GridPane();		
 		BorderPane border = new BorderPane();
@@ -89,13 +96,12 @@ public class MainGUI extends Application {
 		border.setCenter(addVBoxBottom()); 
 		border.setBottom(addHBoxLogOut());
 		
-		//hlavneOkno.setScene(new Scene(border, 900, 600));
 		Scene hlavnascena = new Scene(border, 900, 600);
 		Scene loginscena = new Scene(loginMenu(), 400, 200);
 		hlavneOkno.setScene(hlavnascena);
-		hlavneOkno.show();
-		hlavneOkno.centerOnScreen();
-		Thread.sleep(1000);				// len spomalenie 3 sek. pri prepnuti okien
+		//hlavneOkno.show();
+		//hlavneOkno.centerOnScreen();
+		Thread.sleep(1000);				//spomalenie 1 sek. pri prepnuti okien
 		hlavneOkno.setScene(loginscena);
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
@@ -111,31 +117,25 @@ public class MainGUI extends Application {
 				String heslo = "";
 				uzivatel = loginText.getText();
 				heslo = passwordText.getText();
-				// tu este doplnit prihlasovanie lektora  a jeho login a heslo
+				//tu este treba doplnit prihlasovanie lektora  a jeho login a heslo
 				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
 					hlavneOkno.setScene(hlavnascena);
 					hlavneOkno.show();
 					hlavneOkno.centerOnScreen();
-					
-					// inicializáciu presunú na button aby sa po každom prihlásení nespúšala automaticky 
-					try {
-						  vypis.appendText("\nBeží inicializácia ! \n");
-					      course.inicializacia();
-					      vypis.appendText("Inicializácia ukonèená ! \n");
-					}
-					catch (Exception e) {
-						e.printStackTrace();
-						vypis.appendText("Chyba je : " + e.getMessage() + "\n");
-					}
-							
+												
+					kurz0.setDisable(true);
 					kurz1.setDisable(true);
 					kurz2.setDisable(true);
 					kurz3.setDisable(true);
+					beh1.setDisable(true);
 					beh2.setDisable(true);
 					beh3.setDisable(true);
 				}
 				else {
-					System.out.println("Chyba prihlásenia");
+					//System.out.println("Chyba prihlásenia");
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("Chyba prihlásenia !");
+					alert.showAndWait();
 				}
 			}
 		}
@@ -166,11 +166,8 @@ public class MainGUI extends Application {
 				hlavneOkno.hide();	
 				hlavneOkno.setScene(loginscena);
 				hlavneOkno.show();
-				hlavneOkno.centerOnScreen();
-				
-				//hlavneOkno.close();	
+				hlavneOkno.centerOnScreen();	
 			});
-			
 			
 			
 			//------------------------------------------------------------------------
@@ -186,7 +183,6 @@ public class MainGUI extends Application {
 						vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(0));
 						vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 						n++;
-						
 					}			
 			});
 		
@@ -232,6 +228,27 @@ public class MainGUI extends Application {
 				}	
 			});
 					
+			//--------------------------------------
+
+			//beh inicializacia - spusta lektor
+			novy.setOnAction((ActionEvent e) -> {
+				 
+				try {
+					  vypis.appendText("\nBeží inicializácia ! \n");
+				      course.inicializacia();
+				      vypis.appendText("Inicializácia ukonèená ! \n");
+				}
+				catch (Exception ex) {
+					ex.printStackTrace();
+					vypis.appendText("Chyba je : " + ex.getMessage() + "\n");
+				}
+				
+				novy.setDisable(true);
+				kurz0.setDisable(false);
+				beh1.setDisable(false);
+			});
+
+			
 			//beh 1.kurzu - spusta lektor
 			beh1.setOnAction((ActionEvent e) -> {
 				//course.beh(1);
@@ -243,19 +260,56 @@ public class MainGUI extends Application {
 			
 			//beh 2.kurzu - spusta lektor
 			beh2.setOnAction((ActionEvent e) -> {
-				//course.beh(2);
 				vb2.start();               //  spusti beh 2 v novom vlakne
 				kurz2.setDisable(false);
 				beh3.setDisable(false);
 				beh2.setDisable(true);
 			});
 			
-			//beh 2.kurzu - spusta lektor
+			//beh 3.kurzu - spusta lektor
 			beh3.setOnAction((ActionEvent e) -> {
-				//course.beh(3);
 				vb3.start();
 				kurz3.setDisable(false);
 				beh3.setDisable(true);
+			});
+
+
+			//nacitanie a vypis starych vysledkov - spusta lektor
+			stare.setOnAction((ActionEvent e) -> {
+				try {
+					
+					// zistenie cesty k suboru MainGUI.class
+					String path2 = MainGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+				    path2 = path2.substring(0, path2.lastIndexOf("/")) ;
+				    path2 = path2.substring(1, path2.lastIndexOf("/")) + "/" ;
+				    
+					FileChooser vs = new FileChooser();
+					vs.setTitle("Výber starších výsledkov");
+					vs.setInitialDirectory(new File(path2) );
+					vs.getExtensionFilters().addAll(
+							new ExtensionFilter("Výsledky Files", "Vysledok*.txt"),
+							new ExtensionFilter("Text Files", "*.txt"),
+							new ExtensionFilter("All Files", "*.*")
+							);
+					File selectedFile = vs.showOpenDialog(hlavneOkno);
+					if (selectedFile != null) {
+						vypis.clear();
+						vypis.appendText("\nZvolený súbor : " + selectedFile + "\n\n");										
+						course.nacitajObjekt(selectedFile.getName());    
+						vypis.appendText("Výpis starých výsledkov:\n");
+						vypis.appendText(hlavicka);
+						Iterator<Students> iter = course.studentivysl.iterator();
+						int n = 1;
+						while(iter.hasNext()) {
+							vypis.appendText( + n + ".\t\t" + iter.next().vypisvyslGUI());
+							vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
+							n++;
+						}
+					}
+				}
+				catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			});
 			
 						
@@ -327,22 +381,28 @@ public class MainGUI extends Application {
 		GridPane grid2 = new GridPane();
 				
 		beh.setPrefSize(110, 20);
-		beh1.setPrefSize(100, 20);
-		beh2.setPrefSize(100, 20);
-		beh3.setPrefSize(100, 20);
+		novy.setPrefSize(110, 20);
+		beh1.setPrefSize(110, 20);
+		beh2.setPrefSize(110, 20);
+		beh3.setPrefSize(110, 20);
+		stare.setPrefSize(110, 20);
 		
 		beh.setFont(Font.font(16));
+		novy.setFont(Font.font(14));
 		beh1.setFont(Font.font(14));
 		beh2.setFont(Font.font(14));
 		beh3.setFont(Font.font(14));
+		stare.setFont(Font.font(14));
 		
 		grid2.setVgap(10);
 	    grid2.setPadding(new Insets(10, 0, 0, 10));
 	    
 	    grid2.add(beh, 0, 0);
-	    grid2.add(beh1, 0, 2);
-	    grid2.add(beh2, 0, 3);
-	    grid2.add(beh3, 0, 4);
+	    grid2.add(novy, 0, 2);
+	    grid2.add(beh1, 0, 3);
+	    grid2.add(beh2, 0, 4);
+	    grid2.add(beh3, 0, 5);
+	    grid2.add(stare, 0, 7);
 	    
 		return grid2;
 	}
@@ -363,7 +423,6 @@ public class MainGUI extends Application {
 		mat.setFont(Font.font(14));
 		inf.setFont(Font.font(14));
 
-		
 		grid3.setVgap(10);
 	    grid3.setPadding(new Insets(10, 0, 0, 10));
 		return grid3;
@@ -395,7 +454,6 @@ public class MainGUI extends Application {
 		HBox hboxBottom = new HBox();
 		hboxBottom.setPadding(new Insets(15, 12, 15, 12));
 		hboxBottom.setSpacing(12);
-		//hboxBottom.setStyle("-fx-background-color: #199998;");
 	    
 	    prehlad.setPrefSize(100, 20);
 	    student.setPrefSize(100, 20);
