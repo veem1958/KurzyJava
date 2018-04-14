@@ -4,18 +4,26 @@ package projectGUI;
 import javafx.event.*;
 
 import java.util.Iterator;
+import java.util.Optional;
+import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.InvalidClassException;
 import java.lang.Exception;
 import javafx.application.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
@@ -42,7 +50,6 @@ public class MainGUI extends Application {
 	private Label nazov = new Label("PRÕPRAVN› KURZ Z MATEMATIKY A INFORMATIKY");
 	private Button student = new Button("ätudenti");
 	private Button lektor = new Button("Lektori");
-	private Button tema = new Button("TÈmy");
 	private Button signOut = new Button("Odhl·siù sa");
 	private TextArea vypis = new TextArea();
 	
@@ -60,7 +67,7 @@ public class MainGUI extends Application {
 	Button kurz1 = new Button("Po 1.kurze");
 	Button kurz2 = new Button("Po 2.kurze");
 	Button kurz3 = new Button("Po 3.kurze");
-	//
+	
 	
 	//lektori
 	Label beh = new Label("Beh kurzov");
@@ -71,11 +78,6 @@ public class MainGUI extends Application {
 	Button stare = new Button("starÈ v˝sledky");
 	//
 	
-	//temy
-	Label predmety = new Label("Predmety");
-	Button mat = new Button("Matematika");
-	Button inf = new Button("Informatika");
-	//
 	
 	Kurzy course = new Kurzy();
 	Thread vb1 = new Thread(new VlaknoBeh(1));   // vl·kno 1 pre beh 1. kurzu
@@ -96,17 +98,26 @@ public class MainGUI extends Application {
 		border.setCenter(addVBoxBottom()); 
 		border.setBottom(addHBoxLogOut());
 		
+		kurz0.setDisable(true);
+		kurz1.setDisable(true);
+		kurz2.setDisable(true);
+		kurz3.setDisable(true);
+
+		novy.setDisable(false);
+		beh1.setDisable(true);
+		beh2.setDisable(true);
+		beh3.setDisable(true);
+				
 		Scene hlavnascena = new Scene(border, 900, 600);
 		Scene loginscena = new Scene(loginMenu(), 400, 200);
 		hlavneOkno.setScene(hlavnascena);
-		//hlavneOkno.show();
-		//hlavneOkno.centerOnScreen();
-		Thread.sleep(1000);				//spomalenie 1 sek. pri prepnuti okien
+		Thread.sleep(500);		  			//spomalenie 0,5 sek. pri prepnuti okien
 		hlavneOkno.setScene(loginscena);
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
 		
 		//-------------------------------------------------------------
+		
 		//start hlavneho okna a menu
 		class Prihlasenie implements EventHandler<ActionEvent> {
 			@Override
@@ -117,22 +128,25 @@ public class MainGUI extends Application {
 				String heslo = "";
 				uzivatel = loginText.getText();
 				heslo = passwordText.getText();
-				//tu este treba doplnit prihlasovanie lektora  a jeho login a heslo
+
 				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
 					hlavneOkno.setScene(hlavnascena);
 					hlavneOkno.show();
 					hlavneOkno.centerOnScreen();
-												
-					kurz0.setDisable(true);
-					kurz1.setDisable(true);
-					kurz2.setDisable(true);
-					kurz3.setDisable(true);
-					beh1.setDisable(true);
-					beh2.setDisable(true);
-					beh3.setDisable(true);
+					student.setDisable(false);
+					lektor.setDisable(true);
+					border.setLeft(addGridPane1());
+				}
+				else if (uzivatel.equalsIgnoreCase("lektor") && heslo.equalsIgnoreCase("abc123")) {
+					hlavneOkno.setScene(hlavnascena);
+					hlavneOkno.show();
+					hlavneOkno.centerOnScreen();
+					student.setDisable(false);
+					lektor.setDisable(false);
+					border.setLeft(addGridPane2());
+					
 				}
 				else {
-					//System.out.println("Chyba prihl·senia");
 					Alert alert = new Alert(AlertType.ERROR);
 					alert.setContentText("Chyba prihl·senia !");
 					alert.showAndWait();
@@ -142,6 +156,27 @@ public class MainGUI extends Application {
 		
 		try {
 			signIn.setOnAction(new Prihlasenie());
+		/*	
+			signIn.setOnKeyPressed(new EventHandler<KeyPressed>().handle(ep)) {
+				 
+			    @Override
+			    public void handle(KeyEvent event) {
+			        if(event.getCode().equals(KeyCode.ENTER)) {
+			        	signIn.setOnAction(new Prihlasenie());
+			        }
+			    }
+
+				@Override
+				public void handle(KeyPressed ep) {
+					// TODO Auto-generated method stub
+					if(ep.getCode().equals(KeyCode.ENTER)) {
+			        	signIn.setOnAction(new Prihlasenie());
+			        }
+					
+				}
+			};
+			*/
+
 			
 			//hlavne menu
 			student.setOnAction((ActionEvent e) -> {		//pouzitie lambda vyrazu
@@ -152,16 +187,11 @@ public class MainGUI extends Application {
 					border.setLeft(addGridPane2());		
 			});
 			
-			tema.setOnAction((ActionEvent e) -> {	
-					border.setLeft(addGridPane3());
-			});
 			//
 			
 			//odhlasenie a ukoncenie programu
 			signOut.setOnAction((ActionEvent e) -> {
 				System.out.println("vlakno 1 stav : " + vb1.getState());	
-				System.out.println("vlakno 2 stav : " + vb2.getState());	
-				System.out.println("vlakno 3 stav : " + vb3.getState());	
 				passwordText.clear();				
 				hlavneOkno.hide();	
 				hlavneOkno.setScene(loginscena);
@@ -234,6 +264,7 @@ public class MainGUI extends Application {
 			novy.setOnAction((ActionEvent e) -> {
 				 
 				try {
+					  vypis.clear();
 					  vypis.appendText("\nBeûÌ inicializ·cia ! \n");
 				      course.inicializacia();
 				      vypis.appendText("Inicializ·cia ukonËen· ! \n");
@@ -278,6 +309,9 @@ public class MainGUI extends Application {
 			stare.setOnAction((ActionEvent e) -> {
 				try {
 					
+			        String selected = "canceled";
+			        
+			        /*
 					// zistenie cesty k suboru MainGUI.class
 					String path2 = MainGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 				    path2 = path2.substring(0, path2.lastIndexOf("/")) ;
@@ -292,10 +326,41 @@ public class MainGUI extends Application {
 							new ExtensionFilter("All Files", "*.*")
 							);
 					File selectedFile = vs.showOpenDialog(hlavneOkno);
+					*/
+			        
+					// --- nove doplnene 14.4.2018 --- 
+					course.zoznsub.clear(); 
+					course.najdiSuboryVysled();
+
+					ObservableList<String> observableList = FXCollections.observableList (course.zoznsub);
+			        observableList.addListener(new ListChangeListener() {
+			            @Override
+			            public void onChanged(ListChangeListener.Change change) {
+			                System.out.println("Zisten· zmena v zozname ! ");
+			            }
+			        });					
+			        
+			        ChoiceDialog dialog = new ChoiceDialog(observableList.get(0), observableList);
+			        dialog.setTitle("V˝ber");
+			        dialog.setHeaderText("Vyberte s˙bor s v˝sledkami");
+			        Thread.sleep(500);
+			        Optional<String> result = dialog.showAndWait();	
+			        selected = "canceled";
+			        
+			        if (result.isPresent()) {
+			            selected = result.get();
+			        }
+			        //System.out.println("Vybran˝ s˙bor z listu :  " + selected);					
+			        // ---------- koniec doplnene 14.4.2018 -----
+
+			        /*			        
 					if (selectedFile != null) {
+						selected = selectedFile.getName();
+					*/
+			        if (selected != "canceled") {
 						vypis.clear();
-						vypis.appendText("\nZvolen˝ s˙bor : " + selectedFile + "\n\n");										
-						course.nacitajObjekt(selectedFile.getName());    
+						vypis.appendText("\nZvolen˝ s˙bor : " + selected + "\n\n");										
+						course.nacitajObjekt(selected);    
 						vypis.appendText("V˝pis star˝ch v˝sledkov:\n");
 						vypis.appendText(hlavicka);
 						Iterator<Students> iter = course.studentivysl.iterator();
@@ -306,6 +371,14 @@ public class MainGUI extends Application {
 							n++;
 						}
 					}
+
+			        			      					
+				}
+				catch (InvalidClassException e1) {
+					Alert al1 = new Alert(AlertType.INFORMATION);
+					al1.setHeaderText("Inform·cia");
+					al1.setContentText("Chyba ! Uloûen˝ objekt v˝sledkov je star˝. Sk˙ste novöÌ s˙bor !");
+					al1.showAndWait();
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
@@ -393,7 +466,7 @@ public class MainGUI extends Application {
 		beh2.setFont(Font.font(14));
 		beh3.setFont(Font.font(14));
 		stare.setFont(Font.font(14));
-		
+
 		grid2.setVgap(10);
 	    grid2.setPadding(new Insets(10, 0, 0, 10));
 	    
@@ -405,27 +478,6 @@ public class MainGUI extends Application {
 	    grid2.add(stare, 0, 7);
 	    
 		return grid2;
-	}
-	
-	//temy -> zoznam predmetov
-	private GridPane addGridPane3() {
-		GridPane grid3 = new GridPane();
-		
-		predmety.setPrefSize(100, 20);
-		mat.setPrefSize(100, 20);
-		inf.setPrefSize(100, 20);
-		
-		grid3.add(predmety, 0, 0);
-		grid3.add(mat, 0, 1);
-		grid3.add(inf, 0, 2);
-		
-		predmety.setFont(Font.font(16));
-		mat.setFont(Font.font(14));
-		inf.setFont(Font.font(14));
-
-		grid3.setVgap(10);
-	    grid3.setPadding(new Insets(10, 0, 0, 10));
-		return grid3;
 	}
 	
 
@@ -458,14 +510,12 @@ public class MainGUI extends Application {
 	    prehlad.setPrefSize(100, 20);
 	    student.setPrefSize(100, 20);
 	    lektor.setPrefSize(100, 20);
-	    tema.setPrefSize(100, 20);
 	    prehlad.setFont(Font.font(null, FontWeight.BOLD, 16));    
 	    student.setFont(Font.font(16));
 	    lektor.setFont(Font.font(16));
-	    tema.setFont(Font.font(16));
 	    	    
 	    hboxBottom.setBackground(new Background(new BackgroundFill(Color.MEDIUMTURQUOISE, null, Insets.EMPTY)));
-	    hboxBottom.getChildren().addAll(prehlad, student, lektor, tema);
+	    hboxBottom.getChildren().addAll(prehlad, student, lektor);
 	    
 	    return hboxBottom;
 	}

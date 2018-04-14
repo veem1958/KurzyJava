@@ -10,7 +10,7 @@ public class Students implements Passwords, Serializable {
 	
 	transient protected Subjects mat;
 	transient protected Subjects inf;
-	private double suma;		//suma bodov z mat aj info za kazdy kurz
+	private double[] suma =  new double[4];		//suma bodov z mat aj info za kazdy kurz  --- zmena na pole 14.4.2018
 	private String meno;
 	String text = "";
 	
@@ -45,7 +45,7 @@ public class Students implements Passwords, Serializable {
 
 	public void vypisvysl() {
 	
-		System.out.println(this.getMeno() + "\t Body spolu: "	+ this.getSuma(0) );
+		System.out.println(this.getMeno() + "\t Body spolu: "	+ this.getSuma(3) );
 	}
 	
 
@@ -53,7 +53,7 @@ public class Students implements Passwords, Serializable {
 		
 		String pommeno = this.getMeno();
 		
-		text = (String.format("%-16s", pommeno) + "\t Spolu:  "	+ String.format("%-6.2f", (this.getSuma(0))) + "\n");
+		text = (String.format("%-16s", pommeno) + "\t Spolu:  "	+ String.format("%-6.2f", (this.getSuma(3))) + "\n");
 		
 		return this.text;
 	}
@@ -94,11 +94,11 @@ public class Students implements Passwords, Serializable {
 	
 	//suma bodov mat + info 
 	public void setSuma(int kurz) {
-		this.suma = (double) Math.round((mat.getMarks(this, kurz) + inf.getMarks(this, kurz))*100)/100;
+		this.suma[kurz] = (double) Math.round((mat.getMarks(this, kurz) + inf.getMarks(this, kurz))*100)/100;
 	}
 	
 	public double getSuma(int kurz) {
-		return this.suma;
+		return this.suma[kurz];
 	}
 	
 	// zapis meno studenta

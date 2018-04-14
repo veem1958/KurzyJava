@@ -1,14 +1,19 @@
 package projectMain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InvalidClassException;
+import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.Exception;
@@ -23,6 +28,8 @@ public class Kurzy {
 	public LinkedList<Students>[] studenti = new LinkedList[4];
 	public LinkedList<Students> studentivysl = new LinkedList();
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
+
+	public List<String> zoznsub = new ArrayList<String>();
 	
 	
 	public void inicializacia() throws Exception {
@@ -56,8 +63,7 @@ public class Kurzy {
 			lektori.add(lektor[i]);
 		}
 		
-		//lektor[8].naplnBody();      // --- test na vynimku !!! index mimo rozsahu pola
-				
+		
 	}
 	
 	
@@ -78,24 +84,61 @@ public class Kurzy {
 		}	
 			
 		// zotriedi podla celkoveho poctu bodov Suma = Mat+Inf	
-		Collections.sort(studenti[kurz], Collections.reverseOrder(new SortbySuma()));
+		Collections.sort(studenti[kurz], Collections.reverseOrder(new SortbySuma(kurz)));
 		//vypisStudent(kurz);  // konzola
 		
 		// zapise do suboru celkove vysledky cez serializaciu objektu
 		if (kurz == 3) {
 			try {
-				zapisObjekt(kurz);
+				zapisObjekt(kurz);				
 			}
 			catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			// --- doplnene 14.4.2018 ---
+			try {
+			    najdiSuboryVysled();
+			} 
+			catch (Exception e) {
+			  	e.printStackTrace();
+			}
 		}
-		
 	}
 	
 	
+	// vyhlada subory vysledkov a da ich do listu ---  doplnene 14.4.2018
+	
+	public void najdiSuboryVysled() throws FileNotFoundException, IOException {
+		try {
+			
+			File folder = new File(".");     // moûe byù aj "." , "d:\\down\\" , "..\\KurzyJava\\"
+			File[] listOfFiles = folder.listFiles(new FilenameFilter() {
+				@Override
+				public boolean accept(File folder, String name) {
+					return (name.endsWith(".txt") && name.startsWith("Vysl"));
+				}
+			});
+
+		    for (int i = 0; i < listOfFiles.length; i++) {
+		      if (listOfFiles[i].isFile()) {
+		             zoznsub.add(listOfFiles[i].getName());
+		      } 
+		    }
+		    
+	        Collections.sort(zoznsub, Collections.reverseOrder());
+	        //System.out.println(zoznsub);		    
+		    
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	// zapise vysledky kurzu studentov do suboru cez serializaciu objektu
-	public void zapisObjekt(int kurz) throws FileNotFoundException, IOException {
+	public void zapisObjekt(int kurz) throws FileNotFoundException, IOException, InvalidObjectException {
 		try {
 			DateFormat formatData = new SimpleDateFormat("yyyyMMddHHmm");
 			Date datum = new Date();
@@ -109,7 +152,6 @@ public class Kurzy {
 			s.flush();
 			System.out.println("V˝sledok 3.kurzu uloûen˝ do s˙boru - serializ·cia.");
 			s.close();
-			System.out.println("S˙bor zatvoren˝.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -117,17 +159,21 @@ public class Kurzy {
 	
 	
 	// nacita vysledky kurzu studentov zo suboru do objektu cez serializaciu
-	public void nacitajObjekt(String s) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void nacitajObjekt(String s) throws FileNotFoundException, IOException, InvalidClassException, ClassNotFoundException {
 		try {
 			studentivysl = new LinkedList<Students>();
 			String menosub = s;
 			ObjectInputStream v = new ObjectInputStream(new FileInputStream(menosub));
 			studentivysl = (LinkedList<Students>) v.readObject();
-			System.out.println("Objekt naËÌtan˝.");
 			v.close();
 			System.out.println("PoËet ötudentov v naËÌtanom objekte : " + studentivysl.size());
 			
-		} catch (Exception e) {
+		}
+		catch (InvalidClassException eobj) {
+			throw new InvalidClassException("Chyba objektu v s˙bore.");
+			
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
