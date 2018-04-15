@@ -1,5 +1,4 @@
 package projectMain;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -20,6 +19,10 @@ import java.lang.Exception;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+/**
+*Trieda Kurzy zabezpeèuje hlavné metódy pre prácu so študentami, lektormi, naèítanie a zápis vısledkov. 
+*@author Denisa Mensatorisová  
+*/
 public class Kurzy {
 	
 	Students[] student = new Students[100];
@@ -31,14 +34,18 @@ public class Kurzy {
 
 	public List<String> zoznsub = new ArrayList<String>();
 	
-	
+	/**
+	 * Metóda naplní generovanımi náhodnımi(Random) údajmi pole 100 študentov a pole 5 lektorov,
+	 * môe nasta vınimka IndexOutOfBoundsException ak je index po¾a mimo rozsah 
+	 * @throws Exception
+	 */
 	public void inicializacia() throws Exception {
 		
 		for (int i = 0; i < 4; i++) {
 			 studenti[i] = new LinkedList<Students>();
 		}
 		
-		//inicializacia studentov bez maturity z matematiky a informatiky
+		/** inicializacia studentov bez maturity z matematiky a informatiky */
 		for (int i = 0; i < 40; i++) {
 			student[i] = new Students(new Matematika(false), new Informatika(false));
 			student[i].naplnBody();
@@ -47,7 +54,7 @@ public class Kurzy {
 			studenti[0].add(student[i]);
 		}
 		
-		//inicializacia studentov s maturitov z matematiky a informatiky
+		/**inicializacia studentov s maturitov z matematiky a informatiky */
 		for (int i = 40; i < 100; i++) {
 			student[i] = new Students(new Matematika(true), new Informatika(true));
 			student[i].naplnBody();		
@@ -56,7 +63,7 @@ public class Kurzy {
 			studenti[0].add(student[i]);
 		}
 				
-		//inicializacia ucitelov
+		/**inicializacia ucitelov */
 		for (int i = 0; i < 5; i++) {
 			lektor[i] = new Teachers(new Matematika(), new Informatika());
 			lektor[i].naplnBody();
@@ -67,7 +74,12 @@ public class Kurzy {
 	}
 	
 	
-	
+	/** 
+	 * Metóda <b>beh</b> realizuje kurzy študentov s náhodnım vıberom lektora, 
+	 * študenti dostávajú za kadı kurz náhodne body z matematiky a informatiky,
+	 * po 3 kurze sa celkové dosiahnuté body zapíšu do súboru cez serializáciu objektu
+	 * @param kurz - poradie kurzu 1 a 3
+	 */
 	public void beh(int kurz) {
 		
 		int mat = (int) (Math.random() * 5 + 0);		//nahodny vyber lektora na dany kurz
@@ -75,7 +87,7 @@ public class Kurzy {
 		double bodyMat = lektor[mat].mat.getMarks(lektor[mat]);	//zistenie bodov lektora z daneho predmetu
 		double bodyInf = lektor[inf].inf.getMarks(lektor[inf]);
 		System.out.println("Mat: ucitel: " + mat + " - " + bodyMat);
-		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n\n");
+		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n");
 						
 		for (int i = 0; i < 100; i++) {
 			student[i].addBody(kurz, bodyMat, bodyInf);
@@ -85,7 +97,6 @@ public class Kurzy {
 			
 		// zotriedi podla celkoveho poctu bodov Suma = Mat+Inf	
 		Collections.sort(studenti[kurz], Collections.reverseOrder(new SortbySuma(kurz)));
-		//vypisStudent(kurz);  // konzola
 		
 		// zapise do suboru celkove vysledky cez serializaciu objektu
 		if (kurz == 3) {
@@ -96,7 +107,7 @@ public class Kurzy {
 				e.printStackTrace();
 			}
 			
-			// --- doplnene 14.4.2018 ---
+			// prezrie aktualny adresár na súbory s vısledkami
 			try {
 			    najdiSuboryVysled();
 			} 
@@ -107,8 +118,12 @@ public class Kurzy {
 	}
 	
 	
-	// vyhlada subory vysledkov a da ich do listu ---  doplnene 14.4.2018
-	
+	/**
+	 * Metóda vyh¾adá súbory starších vısledkov a názvy súborov uloí do listu <i>zoznsub</i>,
+	 * preh¾adáva aktuálny adresár ".", názvy súborov v liste zotriedi pod¾a aktuálnosti	
+	 * @throws java.io.FileNotFoundException
+	 * @throws java.io.IOException
+	 */
 	public void najdiSuboryVysled() throws FileNotFoundException, IOException {
 		try {
 			
@@ -127,7 +142,6 @@ public class Kurzy {
 		    }
 		    
 	        Collections.sort(zoznsub, Collections.reverseOrder());
-	        //System.out.println(zoznsub);		    
 		    
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,9 +149,17 @@ public class Kurzy {
 	}
 	
 	
+//	 * Metóda zapise vysledky kurzu studentov do suboru cez serializaciu objektu
 	
 	
-	// zapise vysledky kurzu studentov do suboru cez serializaciu objektu
+	/**
+	 * Metóda zapisuje celkové vısledky kurzu (po 3. kurze) študentov do súboru s vyzuitím serializácie objektu,
+	 * údaje sú zapisované do súboru s generovanım názvom pod¾a aktuálneho dátumu a èasu v tvare "Vysledok_yyyyMMddHHmm.txt",	 
+	 * @param kurz - èíslo kurzu
+	 * @throws java.io.FileNotFoundException
+	 * @throws java.io.IOException
+	 * @throws java.io.InvalidObjectException  
+	 */
 	public void zapisObjekt(int kurz) throws FileNotFoundException, IOException, InvalidObjectException {
 		try {
 			DateFormat formatData = new SimpleDateFormat("yyyyMMddHHmm");
@@ -158,7 +180,17 @@ public class Kurzy {
 	}
 	
 	
-	// nacita vysledky kurzu studentov zo suboru do objektu cez serializaciu
+	/**
+	 * Metóda naèíta zo súboru s názvom v parametri celkové vısledky kurzu študentov do objektu typu List(Students) cez deserializáciu objektu,
+	 * pri èítaní objektu deserializáciou môe nasta vınimka ak objekt v súbore je staršieho typu,
+	 * to znamená, e medzi zápisom objektu do súboru a aktuálnym stavom objektu došlo k zmene vo vlastnostiach objektu
+	 *  a tım nesedí serial èíslo objektu nové a staré uloené v súbore. 
+	 * @param s
+	 * @throws java.io.FileNotFoundException
+	 * @throws java.io.IOException
+	 * @throws java.io.InvalidClassException
+	 * @throws java.lang.ClassNotFoundException
+	 */
 	public void nacitajObjekt(String s) throws FileNotFoundException, IOException, InvalidClassException, ClassNotFoundException {
 		try {
 			studentivysl = new LinkedList<Students>();

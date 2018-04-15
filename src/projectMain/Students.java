@@ -1,13 +1,18 @@
 package projectMain;
 
 import java.io.Serializable;
-import java.util.Observable;
-
-import java.util.Observer;
+//import java.util.Observable;
+//import java.util.Observer;
 import java.util.Random;
 
+
+/**
+*Trieda Students zabezpeèuje hlavné metódy pre zápis a naèítanie údajov o študentovi. 
+*@author Denisa Mensatorisová  
+*/
 public class Students implements Passwords, Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	transient protected Subjects mat;
 	transient protected Subjects inf;
 	private double[] suma =  new double[4];		//suma bodov z mat aj info za kazdy kurz  --- zmena na pole 14.4.2018
@@ -49,6 +54,11 @@ public class Students implements Passwords, Serializable {
 	}
 	
 
+	/**
+	 * Metóda sformátuje len vybrané hlavné údaje(meno, celkové body) študenta do reazca vhodného pre vıpis v GUI,
+	 * vyuíva sa pre zobrazenie starších celkovıch vısledkov uloenıch v súbore 
+	 * @return - vracia sformátovanı reazec
+	 */
 	public String vypisvyslGUI() {
 		
 		String pommeno = this.getMeno();
@@ -59,8 +69,12 @@ public class Students implements Passwords, Serializable {
 	}
 	
 	
-	
-	//vypis GUI
+		
+	/**
+	 * Metóda sformátuje údaje študenta do reazca vhodného pre vıpis v GUI
+	 * @param kurz - vıber údajov pod¾a poadovaného èísla kurzu
+	 * @return - vracia sformátovanı reazec
+	 */
 	public String vypisGUI(int kurz) {
 		
 		String maturitaM;

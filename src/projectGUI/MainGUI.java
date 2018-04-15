@@ -1,8 +1,7 @@
+
 package projectGUI;
 
-
 import javafx.event.*;
-
 import java.util.Iterator;
 import java.util.Optional;
 import java.awt.event.KeyEvent;
@@ -39,11 +38,12 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-
 import projectMain.Kurzy;
 import projectMain.Students;
 
-
+/**
+*@author Denisa Mensatorisová 
+*/
 public class MainGUI extends Application {
 
 	private Label prehlad = new Label("PREH¼AD:");
@@ -80,7 +80,13 @@ public class MainGUI extends Application {
 	
 	
 	Kurzy course = new Kurzy();
-	Thread vb1 = new Thread(new VlaknoBeh(1));   // vlákno 1 pre beh 1. kurzu
+	
+	/** 
+	 * 3 vlákna pre beh kurzov, kadı kurz má svoje vlákno
+	 * @see java.lang.Thread
+	 * @see java.lang.Runnable
+	 */	
+	Thread vb1 = new Thread(new VlaknoBeh(1));   
 	Thread vb2 = new Thread(new VlaknoBeh(2));   // vlákno 2 pre beh 2. kurzu
 	Thread vb3 = new Thread(new VlaknoBeh(3));   // vlákno 3 pre beh 3. kurzu
 	
@@ -118,7 +124,9 @@ public class MainGUI extends Application {
 		
 		//-------------------------------------------------------------
 		
-		//start hlavneho okna a menu
+		/**
+		 * štart hlavného okna, menu a okna pre login
+		 */
 		class Prihlasenie implements EventHandler<ActionEvent> {
 			@Override
 			public void handle(ActionEvent event) { 
@@ -189,7 +197,9 @@ public class MainGUI extends Application {
 			
 			//
 			
-			//odhlasenie a ukoncenie programu
+			/**
+			 * odhlásenie a prípadné ukonèenie programu
+			 */
 			signOut.setOnAction((ActionEvent e) -> {
 				System.out.println("vlakno 1 stav : " + vb1.getState());	
 				passwordText.clear();				
@@ -202,10 +212,10 @@ public class MainGUI extends Application {
 			
 			//------------------------------------------------------------------------
 			
-			//vypis bodov studentov pred kurzom s pouzitim lambda vyrazu
+			/**vıpis bodov študentov po inicializácii pred kurzom s pouitím lambda vırazu*/
 			kurz0.setOnAction ((ActionEvent e) -> {
 					vypis.clear();
-					vypis.appendText("Vypis bodov pred kurzom:\n");
+					vypis.appendText("Preh¾ad bodov pred kurzom:\n");
 					vypis.appendText(hlavicka);
 					Iterator<Students> iter = course.studenti[0].iterator();
 					int n = 1; 
@@ -216,10 +226,10 @@ public class MainGUI extends Application {
 					}			
 			});
 		
-			//vypis bodov studentov po 1.kurze s pouzitim lambda vyrazu
+			/**vıpis bodov študentov po 1.kurze s pouitím lambda vırazu*/
 			kurz1.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov po 1. kurze:\n");
+				vypis.appendText("Preh¾ad bodov po 1. kurze:\n");
 				vypis.appendText(hlavicka);
 				Iterator<Students> iter = course.studenti[1].iterator();
 				int n = 1;
@@ -230,10 +240,10 @@ public class MainGUI extends Application {
 				}	
 			});
 			
-			//vypis bodov studentov po 2.kurze s pouzitim lambda vyrazu
+			/**vypis bodov studentov po 2.kurze s pouzitim lambda vyrazu*/
 			kurz2.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov po 2. kurze:\n");
+				vypis.appendText("Preh¾ad bodov po 2. kurze:\n");
 				vypis.appendText(hlavicka);
 				Iterator<Students> iter = course.studenti[2].iterator();
 				int n = 1;
@@ -244,10 +254,10 @@ public class MainGUI extends Application {
 				}	
 			});
 			
-			//vypis bodov studentov po 3.kurze s pouzitim lambda vyrazu
+			/**vıpis bodov študentov po 3.kurze s pouitím lambda vırazu*/
 			kurz3.setOnAction((ActionEvent e) -> {
 				vypis.clear();
-				vypis.appendText("Vypis bodov po 3. kurze:\n");
+				vypis.appendText("Preh¾ad bodov po 3. kurze:\n");
 				vypis.appendText(hlavicka);
 				Iterator<Students> iter = course.studenti[3].iterator();
 				int n = 1;
@@ -260,12 +270,12 @@ public class MainGUI extends Application {
 					
 			//--------------------------------------
 
-			//beh inicializacia - spusta lektor
+			/**beh - prvotná inicializácia a vıpis údajov po naplnení - spúša lektor*/
 			novy.setOnAction((ActionEvent e) -> {
 				 
 				try {
 					  vypis.clear();
-					  vypis.appendText("\nBeí inicializácia ! \n");
+					  vypis.appendText("\nPrebieha inicializácia údajov ! \n");
 				      course.inicializacia();
 				      vypis.appendText("Inicializácia ukonèená ! \n");
 				}
@@ -280,18 +290,23 @@ public class MainGUI extends Application {
 			});
 
 			
-			//beh 1.kurzu - spusta lektor
+			/**beh 1.kurzu a vıpis vısledkov po 1.kurze - spúša lektor*/
 			beh1.setOnAction((ActionEvent e) -> {
-				//course.beh(1);
+				vypis.clear();
+ 			    vypis.appendText("\nPrebieha 1. kurz ! \n");
 				vb1.start();               //  spusti beh 1 v novom vlakne
+ 			    vypis.appendText("\n1. kurz ukonèenı ! \n");
 				kurz1.setDisable(false);
 				beh2.setDisable(false);
 				beh1.setDisable(true);
 			});
 			
-			//beh 2.kurzu - spusta lektor
+			/**beh 2.kurzu a vıpis vısledkov po 2.kurze - spúša lektor*/
 			beh2.setOnAction((ActionEvent e) -> {
+				vypis.clear();
+ 			    vypis.appendText("\nPrebieha 2. kurz ! \n");
 				vb2.start();               //  spusti beh 2 v novom vlakne
+ 			    vypis.appendText("\n2. kurz ukonèenı ! \n");
 				kurz2.setDisable(false);
 				beh3.setDisable(false);
 				beh2.setDisable(true);
@@ -299,13 +314,19 @@ public class MainGUI extends Application {
 			
 			//beh 3.kurzu - spusta lektor
 			beh3.setOnAction((ActionEvent e) -> {
+				vypis.clear();
+ 			    vypis.appendText("\nPrebieha 3. kurz ! \n");
 				vb3.start();
+ 			    vypis.appendText("\n3. kurz ukonèenı ! \n");
 				kurz3.setDisable(false);
 				beh3.setDisable(true);
 			});
 
 
-			//nacitanie a vypis starych vysledkov - spusta lektor
+			/**
+			 * Vyh¾adanie, naèítanie a vıpis starıch celkovıch vısledkov kurzov uloenıch v súboroch - spúša lektor
+			 @throws InvalidClassException v prípade ak uloenı objekt s vısledkami je staršia verzia a nesedí sériové èíslo objektu 
+			 */
 			stare.setOnAction((ActionEvent e) -> {
 				try {
 					
@@ -328,10 +349,10 @@ public class MainGUI extends Application {
 					File selectedFile = vs.showOpenDialog(hlavneOkno);
 					*/
 			        
-					// --- nove doplnene 14.4.2018 --- 
-					course.zoznsub.clear(); 
-					course.najdiSuboryVysled();
+					course.zoznsub.clear();      // vycisti pole pre názvy súborov s vısledkami
+					course.najdiSuboryVysled();  // vyh¾adá súbory s vısledkami a naplní do zoznsub
 
+					// obalí objekt zoznsub do Observable Listu, èím bude tento automaticky aktualizovanı pod¾a obsahu v zoznsub
 					ObservableList<String> observableList = FXCollections.observableList (course.zoznsub);
 			        observableList.addListener(new ListChangeListener() {
 			            @Override
@@ -340,28 +361,29 @@ public class MainGUI extends Application {
 			            }
 			        });					
 			        
+			        // vyuitie objektu ChoiceDialog pre zobrazenie a vıber 1 súboru s vısledkami
 			        ChoiceDialog dialog = new ChoiceDialog(observableList.get(0), observableList);
 			        dialog.setTitle("Vıber");
 			        dialog.setHeaderText("Vyberte súbor s vısledkami");
-			        Thread.sleep(500);
+			        Thread.sleep(300);
 			        Optional<String> result = dialog.showAndWait();	
 			        selected = "canceled";
 			        
 			        if (result.isPresent()) {
 			            selected = result.get();
 			        }
-			        //System.out.println("Vybranı súbor z listu :  " + selected);					
-			        // ---------- koniec doplnene 14.4.2018 -----
 
 			        /*			        
 					if (selectedFile != null) {
 						selected = selectedFile.getName();
 					*/
+			        
+			        // vıpis vısledkov naèítanıch zo zvoleného súboru
 			        if (selected != "canceled") {
 						vypis.clear();
 						vypis.appendText("\nZvolenı súbor : " + selected + "\n\n");										
 						course.nacitajObjekt(selected);    
-						vypis.appendText("Vıpis starıch vısledkov:\n");
+						vypis.appendText("Vıpis starıch vısledkov TOP20 :\n");
 						vypis.appendText(hlavicka);
 						Iterator<Students> iter = course.studentivysl.iterator();
 						int n = 1;
@@ -369,6 +391,7 @@ public class MainGUI extends Application {
 							vypis.appendText( + n + ".\t\t" + iter.next().vypisvyslGUI());
 							vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 							n++;
+							if (n >= 21) break;
 						}
 					}
 
@@ -547,7 +570,10 @@ public class MainGUI extends Application {
 		return hboxLogOut;
 	}
 	
-	// pouzitie Nite - Vlakna - Threads s parametrom behu - tım pádom staèí jedna trieda ale bude treba 3 inštancie pre kadı beh zvláš 
+	/**
+	 * Trieda pre pouitie Vlakna (Threads) s parametrom èísla behu(kurzu),
+	 * staèí jedna trieda ale bude potreba vytvori 3 inštancie pre kadı beh zvláš 
+	 */
 	class VlaknoBeh implements Runnable {
 		private int k ;
 		
