@@ -15,7 +15,7 @@ public class Students implements Passwords, Serializable {
 	private static final long serialVersionUID = 1L;
 	transient protected Subjects mat;
 	transient protected Subjects inf;
-	private double[] suma =  new double[4];		//suma bodov z mat aj info za kazdy kurz  --- zmena na pole 14.4.2018
+	private double[] suma =  new double[4];		//suma bodov z mat aj info za kazdy kurz
 	private String meno;
 	String text = "";
 	
@@ -49,7 +49,6 @@ public class Students implements Passwords, Serializable {
 	
 
 	public void vypisvysl() {
-	
 		System.out.println(this.getMeno() + "\t Body spolu: "	+ this.getSuma(3) );
 	}
 	

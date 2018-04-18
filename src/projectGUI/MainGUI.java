@@ -27,11 +27,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineBuilder;
+import javafx.scene.shape.LineToBuilder;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
@@ -42,6 +49,7 @@ import projectMain.Kurzy;
 import projectMain.Students;
 
 /**
+ * Aplik·cia simuluje kurz pre ötudentov stredn˝ch ökÙl, ktorÌ sa zaujÌmaj˙ o öt˙dium na vysokej ökole so zameranÌm na Informatiku. 
 *@author Denisa Mensatorisov· 
 */
 public class MainGUI extends Application {
@@ -97,7 +105,6 @@ public class MainGUI extends Application {
 				
 		hlavneOkno.setTitle("PrÌpravn˝ kury FIIT STU");
 		
-		GridPane loginMenu = new GridPane();		
 		BorderPane border = new BorderPane();
 
 		border.setTop(addVBoxTop());
@@ -122,6 +129,8 @@ public class MainGUI extends Application {
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
 		
+		vypis.setBackground(new Background(new BackgroundFill(Color.MEDIUMTURQUOISE, null, Insets.EMPTY)));
+		
 		//-------------------------------------------------------------
 		
 		/**
@@ -145,7 +154,7 @@ public class MainGUI extends Application {
 					lektor.setDisable(true);
 					border.setLeft(addGridPane1());
 				}
-				else if (uzivatel.equalsIgnoreCase("lektor") && heslo.equalsIgnoreCase("abc123")) {
+				else if (uzivatel.equalsIgnoreCase("lektor") && heslo.equalsIgnoreCase("123abc")) {
 					hlavneOkno.setScene(hlavnascena);
 					hlavneOkno.show();
 					hlavneOkno.centerOnScreen();
@@ -164,26 +173,15 @@ public class MainGUI extends Application {
 		
 		try {
 			signIn.setOnAction(new Prihlasenie());
-		/*	
-			signIn.setOnKeyPressed(new EventHandler<KeyPressed>().handle(ep)) {
-				 
-			    @Override
-			    public void handle(KeyEvent event) {
-			        if(event.getCode().equals(KeyCode.ENTER)) {
-			        	signIn.setOnAction(new Prihlasenie());
-			        }
+						
+			//prihlasenie cez enter
+			passwordText.setOnKeyPressed(e -> {
+			    if (e.getCode() == KeyCode.ENTER) {
+			    	passwordText.setOnAction(new Prihlasenie());
+			        //System.out.println("A key was pressed");
+			        
 			    }
-
-				@Override
-				public void handle(KeyPressed ep) {
-					// TODO Auto-generated method stub
-					if(ep.getCode().equals(KeyCode.ENTER)) {
-			        	signIn.setOnAction(new Prihlasenie());
-			        }
-					
-				}
-			};
-			*/
+			});
 
 			
 			//hlavne menu
@@ -202,7 +200,9 @@ public class MainGUI extends Application {
 			 */
 			signOut.setOnAction((ActionEvent e) -> {
 				System.out.println("vlakno 1 stav : " + vb1.getState());	
-				passwordText.clear();				
+				passwordText.clear();
+				loginText.clear();
+				vypis.clear();
 				hlavneOkno.hide();	
 				hlavneOkno.setScene(loginscena);
 				hlavneOkno.show();
@@ -214,16 +214,16 @@ public class MainGUI extends Application {
 			
 			/**v˝pis bodov ötudentov po inicializ·cii pred kurzom s pouûitÌm lambda v˝razu*/
 			kurz0.setOnAction ((ActionEvent e) -> {
-					vypis.clear();
-					vypis.appendText("Prehæad bodov pred kurzom:\n");
-					vypis.appendText(hlavicka);
-					Iterator<Students> iter = course.studenti[0].iterator();
-					int n = 1; 
-					while(iter.hasNext()) {
-						vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(0));
-						vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
-						n++;
-					}			
+				vypis.clear();
+				vypis.appendText("Prehæad bodov pred kurzom:\n");
+				vypis.appendText(hlavicka);
+				Iterator<Students> iter = course.studenti[0].iterator();
+				int n = 1; 
+				while(iter.hasNext()) {
+					vypis.appendText( + n + ".\t\t" + iter.next().vypisGUI(0));
+					vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
+					n++;
+				}			
 			});
 		
 			/**v˝pis bodov ötudentov po 1.kurze s pouûitÌm lambda v˝razu*/
@@ -281,12 +281,13 @@ public class MainGUI extends Application {
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
-					vypis.appendText("Chyba je : " + ex.getMessage() + "\n");
+					vypis.appendText("Chyba: " + ex.getMessage() + "\n");
 				}
 				
 				novy.setDisable(true);
 				kurz0.setDisable(false);
 				beh1.setDisable(false);
+								
 			});
 
 			
@@ -294,7 +295,7 @@ public class MainGUI extends Application {
 			beh1.setOnAction((ActionEvent e) -> {
 				vypis.clear();
  			    vypis.appendText("\nPrebieha 1. kurz ! \n");
-				vb1.start();               //  spusti beh 1 v novom vlakne
+				vb1.start();				//  spusti beh 1 v novom vlakne
  			    vypis.appendText("\n1. kurz ukonËen˝ ! \n");
 				kurz1.setDisable(false);
 				beh2.setDisable(false);
@@ -305,7 +306,7 @@ public class MainGUI extends Application {
 			beh2.setOnAction((ActionEvent e) -> {
 				vypis.clear();
  			    vypis.appendText("\nPrebieha 2. kurz ! \n");
-				vb2.start();               //  spusti beh 2 v novom vlakne
+				vb2.start();				//  spusti beh 2 v novom vlakne
  			    vypis.appendText("\n2. kurz ukonËen˝ ! \n");
 				kurz2.setDisable(false);
 				beh3.setDisable(false);
@@ -316,10 +317,10 @@ public class MainGUI extends Application {
 			beh3.setOnAction((ActionEvent e) -> {
 				vypis.clear();
  			    vypis.appendText("\nPrebieha 3. kurz ! \n");
-				vb3.start();
+				vb3.start();				//  spusti beh 3 v novom vlakne
  			    vypis.appendText("\n3. kurz ukonËen˝ ! \n");
 				kurz3.setDisable(false);
-				beh3.setDisable(true);
+				beh3.setDisable(true);				
 			});
 
 
@@ -329,7 +330,6 @@ public class MainGUI extends Application {
 			 */
 			stare.setOnAction((ActionEvent e) -> {
 				try {
-					
 			        String selected = "canceled";
 			        
 			        /*
@@ -378,10 +378,10 @@ public class MainGUI extends Application {
 						selected = selectedFile.getName();
 					*/
 			        
-			        // v˝pis v˝sledkov naËÌtan˝ch zo zvolenÈho s˙boru
+			        // v˝pis TOP 20 v˝sledkov naËÌtan˝ch zo zvolenÈho s˙boru
 			        if (selected != "canceled") {
 						vypis.clear();
-						vypis.appendText("\nZvolen˝ s˙bor : " + selected + "\n\n");										
+						vypis.appendText("Zvolen˝ s˙bor : " + selected + "\n\n");										
 						course.nacitajObjekt(selected);    
 						vypis.appendText("V˝pis star˝ch v˝sledkov TOP20 :\n");
 						vypis.appendText(hlavicka);
@@ -391,10 +391,9 @@ public class MainGUI extends Application {
 							vypis.appendText( + n + ".\t\t" + iter.next().vypisvyslGUI());
 							vypis.setFont(Font.font(null, FontWeight.LIGHT, 14));
 							n++;
-							if (n >= 21) break;
+							if (n >= 21) break;  // top 20
 						}
 					}
-
 			        			      					
 				}
 				catch (InvalidClassException e1) {
@@ -407,17 +406,16 @@ public class MainGUI extends Application {
 					ex.printStackTrace();
 				}
 			});
-			
-						
+									
 			
 		}
 		catch(Exception e) {
 			hlavneOkno.close();
-			System.out.println("Chyba............");
+			System.out.println("Chyba !");
 		}
-		
-		
+				
 	}
+	
 	
 	//VYTVARANIE TABULIEK A PANELOV
 	//*****************************************************************************************
@@ -436,6 +434,7 @@ public class MainGUI extends Application {
 		
 		loginMenu.setBackground(new Background(new BackgroundFill(Color.PALETURQUOISE, null, Insets.EMPTY)));
 		signIn.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, null, Insets.EMPTY)));
+		signIn.setBorder(new Border(new BorderStroke(Color.DARKSEAGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		loginMenu.setVgap(10);
 		loginMenu.setHgap(10);
 	    loginMenu.setPadding(new Insets(40, 40, 40, 40));
@@ -552,7 +551,7 @@ public class MainGUI extends Application {
 	
 	    nazov.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
 	    nazov.setTextFill(Color.WHITE);
-	    hboxTop.setBackground(new Background(new BackgroundFill(Color.MEDIUMVIOLETRED, null, Insets.EMPTY)));
+	    hboxTop.setBackground(new Background(new BackgroundFill(Color.DODGERBLUE, null, Insets.EMPTY)));	//mediumvioletred
 	    hboxTop.getChildren().addAll(nazov);
 
 	    return hboxTop;
@@ -566,6 +565,7 @@ public class MainGUI extends Application {
 		
 		hboxLogOut.getChildren().addAll(signOut);
 		signOut.setBackground(new Background(new BackgroundFill(Color.GREENYELLOW, null, Insets.EMPTY)));
+		signOut.setBorder(new Border(new BorderStroke(Color.DARKSEAGREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
 		
 		return hboxLogOut;
 	}
@@ -575,16 +575,16 @@ public class MainGUI extends Application {
 	 * staËÌ jedna trieda ale bude potreba vytvoriù 3 inötancie pre kaûd˝ beh zvl·öù 
 	 */
 	class VlaknoBeh implements Runnable {
-		private int k ;
+		private int kurz ;
 		
 		public VlaknoBeh(int s) { 
-			this.k = s;
+			this.kurz = s;
 		}
 		
    		public void run() {
-   			System.out.println("BeûÌ kurz " + this.k +" vo vl·kne !\n");
-   			course.beh(this.k);
-   			System.out.println("Kurz " + this.k + " ukonËen˝ !\n");
+   			System.out.println("BeûÌ kurz " + this.kurz +" vo vl·kne !\n");
+   			course.beh(this.kurz);
+   			System.out.println("Kurz " + this.kurz + " ukonËen˝ !\n");
    		}
 	}	
 

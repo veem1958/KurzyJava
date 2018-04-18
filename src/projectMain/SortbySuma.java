@@ -11,13 +11,15 @@ import java.util.Comparator;
  */
 public class SortbySuma implements Comparator<Students> {
 
-	private int k;
+	private int kurz;
 	
 	public SortbySuma(int s) { 
-		this.k = s;
+		this.kurz = s;
 	}
 		
 	public int compare(Students a, Students b) {
-		return (int) (a.getSuma(k) * 100 - b.getSuma(k) * 100);
+		return (int) (a.getSuma(this.kurz) * 100 - b.getSuma(this.kurz) * 100);
 	}
+	
+	
 }

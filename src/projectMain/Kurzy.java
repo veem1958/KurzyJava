@@ -28,7 +28,7 @@ public class Kurzy {
 	Students[] student = new Students[100];
 	Teachers[] lektor = new Teachers[5];
 	
-	public LinkedList<Students>[] studenti = new LinkedList[4];
+	public LinkedList<Students>[] studenti = new LinkedList[4]; 
 	public LinkedList<Students> studentivysl = new LinkedList();
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
 
@@ -86,8 +86,8 @@ public class Kurzy {
 		int inf = (int) (Math.random() * 5 + 0);
 		double bodyMat = lektor[mat].mat.getMarks(lektor[mat]);	//zistenie bodov lektora z daneho predmetu
 		double bodyInf = lektor[inf].inf.getMarks(lektor[inf]);
-		System.out.println("Mat: ucitel: " + mat + " - " + bodyMat);
-		System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n");
+		//System.out.println("Mat: ucitel: " + mat + " - " + bodyMat);
+		//System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n");
 						
 		for (int i = 0; i < 100; i++) {
 			student[i].addBody(kurz, bodyMat, bodyInf);
@@ -127,7 +127,7 @@ public class Kurzy {
 	public void najdiSuboryVysled() throws FileNotFoundException, IOException {
 		try {
 			
-			File folder = new File(".");     // može by aj "." , "d:\\down\\" , "..\\KurzyJava\\"
+			File folder = new File(".");     // može by aj "." , "c:\Users\dede\eclipse-worskpace\"
 			File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 				@Override
 				public boolean accept(File folder, String name) {
@@ -149,8 +149,7 @@ public class Kurzy {
 	}
 	
 	
-//	 * Metóda zapise vysledky kurzu studentov do suboru cez serializaciu objektu
-	
+	//* Metóda zapise vysledky kurzu studentov do suboru cez serializaciu objektu
 	
 	/**
 	 * Metóda zapisuje celkové výsledky kurzu (po 3. kurze) študentov do súboru s vyzužitím serializácie objektu,
@@ -165,9 +164,9 @@ public class Kurzy {
 			DateFormat formatData = new SimpleDateFormat("yyyyMMddHHmm");
 			Date datum = new Date();
 			String datumtxt = formatData.format(datum);
-			String menosub = "Vysledok" + "_" + datumtxt + ".txt";
+			String menosub = "Vysledok" + "_" + datumtxt + ".txt";		// vyrobenie nazvu suboru
 
-			System.out.println("nazov suboru bude : " + menosub);
+			System.out.println("Nazov suboru je : " + menosub);
 
 			ObjectOutputStream s = new ObjectOutputStream(new FileOutputStream(menosub));
 			s.writeObject(studenti[kurz]);
@@ -215,15 +214,15 @@ public class Kurzy {
 	//vypis konzola
 	public void vypisStudent(int kurz) {
 		
-			int n = 0;
-			Iterator<Students> iter = studenti[kurz].iterator();  
-			
-			System.out.println(kurz + ".kurz: ");	
-			while(iter.hasNext()) {
-				System.out.print("Student[" + n + "]	");
-				iter.next().vypis(kurz);
-				n++;
-			}
+		int n = 0;
+		Iterator<Students> iter = studenti[kurz].iterator();  
+		
+		System.out.println(kurz + ".kurz: ");	
+		while(iter.hasNext()) {
+			System.out.print("Student[" + n + "]	");
+			iter.next().vypis(kurz);
+			n++;
+		}
 	}
 	
 	
@@ -246,7 +245,7 @@ public class Kurzy {
 		Iterator<Students> iter = studenti[0].iterator();  
 		
 		while(iter.hasNext()) {			
-			iter.next().setPassword();	//tieto hesla zatial nepouzite v GUI 
+			iter.next().setPassword();	// tieto hesla zatial nepouzite v GUI 
 		}
 	}
 	
@@ -257,7 +256,7 @@ public class Kurzy {
 		
 		while(iter.hasNext()) {
 			System.out.print("Heslo[" + n + "]	"); 
-			System.out.println(iter.next().getPassword());
+			System.out.println(iter.next().getPassword());	// tieto hesla zatial nepouzite v GUI 
 			n++;
 		}		
 	}
