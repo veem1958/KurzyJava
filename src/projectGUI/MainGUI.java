@@ -49,9 +49,22 @@ import projectMain.Kurzy;
 import projectMain.Students;
 
 /**
- * Aplikácia simuluje kurz pre študentov strednıch škôl, ktorí sa zaujímajú o štúdium na vysokej škole so zameraním na Informatiku. 
-*@author Denisa Mensatorisová 
-*/
+ * Aplikácia simuluje kurz pre študentov strednıch škôl, ktorí sa zaujímajú o štúdium na vysokej škole so zameraním na Informatiku.
+ * Vstup do aplikácie je cez prihlasovaciu obrazovku. Prihlásenie je urèené pre 2 uívate¾ov - lektor a študent, ktorí majú vlastné heslo. 
+ * Lektor štartuje novı kurz - iniciálne sa naplnia údaje o 100 študentoch a 5 lektoroch. Pri inicializácii sa pre kadého študenta vytvorí meno 
+ * v tvare MenoStud_xx, kde xx je poradové èíslo od 1 do 100. Náhodne sa generujú body za 2 predmety a to Matematika a Informatika. 
+ * Prvé body predstavujú hodnotenie študenta na základe dosiahnutıch vısledkov na strednej škole. Ïalšie body sú študentovi pridávané za to, 
+ * èi v danom predmete aj maturoval.</br>
+ * Lektorom sa náhodne tie pridelia body pre kadı predmet, ktoré vyjadrujú schopnos lektora vysvetli danú tému za Matematiku alebo Informatiku. 
+ * Ïalej lektor riadi beh 3 kurzov. Študenti získavajú v kadom z 3 behov kurzu náhodne body za kadı predmet. Pre kadı beh kurzu sa náhodne vyberá aj lektor.
+ * Body za kadı kurz sa generujú náhodne za kadı predmet, prièom sa ešte zoh¾adòuje momentálna dispozícia študenta v danı deò. Dispozícia sa generuje náhodne 
+ * pre kadého študenta a môe by z intervalu 0,7 a 1. Tie sa do celkovıch bodov študenta zoh¾adní schopnos náhodne vybraného lektora vysvetli danú tému.
+ * Získané body v kadom behu sa prièítavajú k predošlım získanım bodom. Po kadom kurze je moné prezera vısledky zotriedené pod¾a celkovo dosiahnutıch bodov 
+ * z obidvoch predmetov. Po poslednom behu sa celkové dosiahnuté vısledky všetkıch študentov uloia ako objekt do súboru v aktuálnom adresári s názvom 
+ * Vysledok_yyyyMMddHHmm.txt. Lektor má monos prezera tieto uloené vısledky aj za predchádzajúce kurzy vıberom príslušného súboru.  
+ * Študenti majú monos vidie priebené ako aj celkové vısledky kurzu. 
+ *@author Denisa Mensatorisová 
+ */
 public class MainGUI extends Application {
 
 	private Label prehlad = new Label("PREH¼AD:");
@@ -129,7 +142,7 @@ public class MainGUI extends Application {
 		hlavneOkno.show();
 		hlavneOkno.centerOnScreen();
 		
-		vypis.setBackground(new Background(new BackgroundFill(Color.MEDIUMTURQUOISE, null, Insets.EMPTY)));
+		vypis.setBackground(new Background(new BackgroundFill(Color.CADETBLUE, null, Insets.EMPTY)));
 		
 		//-------------------------------------------------------------
 		
@@ -354,7 +367,7 @@ public class MainGUI extends Application {
 
 					// obalí objekt zoznsub do Observable Listu, èím bude tento automaticky aktualizovanı pod¾a obsahu v zoznsub
 					ObservableList<String> observableList = FXCollections.observableList (course.zoznsub);
-			        observableList.addListener(new ListChangeListener() {
+			        observableList.addListener(new ListChangeListener<Object>() {
 			            @Override
 			            public void onChanged(ListChangeListener.Change change) {
 			                System.out.println("Zistená zmena v zozname ! ");

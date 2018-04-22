@@ -58,11 +58,11 @@ public class Informatika extends Subjects {
 		double plus;
 		double vnimanie = (double) Math.round((Math.random() * 0.3 + 0.7)*100)/100;
 		
-		if (kurz == 1) {
-			plus = (temy[0] + bodyInf) * vnimanie;
+		if (kurz >= 1) {
+			plus = (temy[kurz-1] + bodyInf) * vnimanie;
 			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + plus)*100)/100;
 		}
-		
+		/*
 		if (kurz == 2) {
 			plus = (temy[1] + bodyInf) * vnimanie;
 			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + plus)*100)/100;
@@ -72,6 +72,7 @@ public class Informatika extends Subjects {
 			plus = (temy[2] + bodyInf) * vnimanie;
 			this.marksKurzy[kurz] = (double) Math.round((marksKurzy[kurz-1] + plus)*100)/100;
 		}
+		*/
 	}
 			
 }

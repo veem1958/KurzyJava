@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 /**
-*Trieda Students zabezpeèuje hlavné metódy pre zápis a naèítanie údajov o študentovi. 
+*Trieda Students zabezpeèuje hlavné metódy pre zápis, naèítanie a vıpis údajov o študentovi. 
 *@author Denisa Mensatorisová  
 */
 public class Students implements Passwords, Serializable {
@@ -54,9 +54,9 @@ public class Students implements Passwords, Serializable {
 	
 
 	/**
-	 * Metóda sformátuje len vybrané hlavné údaje(meno, celkové body) študenta do reazca vhodného pre vıpis v GUI,
-	 * vyuíva sa pre zobrazenie starších celkovıch vısledkov uloenıch v súbore 
-	 * @return - vracia sformátovanı reazec
+	 * Metóda sformátuje vybrané hlavné údaje (meno, celkové body) študenta do reazca vhodného pre vıpis v GUI,
+	 * vyuíva sa pre zobrazenie starších celkovıch vısledkov uloenıch v súbore. 
+	 * @return vracia sformátovanı reazec
 	 */
 	public String vypisvyslGUI() {
 		
@@ -70,9 +70,9 @@ public class Students implements Passwords, Serializable {
 	
 		
 	/**
-	 * Metóda sformátuje údaje študenta do reazca vhodného pre vıpis v GUI
+	 * Metóda sformátuje údaje študenta do reazca vhodného pre vıpis v GUI.
 	 * @param kurz - vıber údajov pod¾a poadovaného èísla kurzu
-	 * @return - vracia sformátovanı reazec
+	 * @return  vracia sformátovanı reazec
 	 */
 	public String vypisGUI(int kurz) {
 		
@@ -98,33 +98,59 @@ public class Students implements Passwords, Serializable {
 	}
 
 	
-	
+	/**
+	 * Metóda umoòuje vypoèíta a zapísa body študentom po jednotlivıch kurzoch 
+	 * @param kurz - poradie kurzu
+	 * @param bodyMat - hodnota bodov získanıch v danom kurze pre Matematiku
+	 * @param bodyInf - hodnota bodov získanıch v danom kurze pre Informatiku
+	 */
 	//pridavanie bodov studentom po jednotlivych kurzoch
 	public void addBody(int kurz, double bodyMat, double bodyInf) {
 		mat.addMarks(this, kurz, bodyMat);
 		inf.addMarks(this, kurz, bodyInf);
 	}
 	
+	/**
+	 * Metóda zapisuje celkové body získané v danom kurze ako súèet bodov z Matematiky a Informatiky.
+	 * @param kurz - poradie kurzu
+	 */
 	//suma bodov mat + info 
 	public void setSuma(int kurz) {
 		this.suma[kurz] = (double) Math.round((mat.getMarks(this, kurz) + inf.getMarks(this, kurz))*100)/100;
 	}
 	
+	
+	/**
+	 * Metóda naèíta uloenú hodnotu celkovıch bodov študenta za danı kurz.
+	 * @param kurz - poradie kurzu 
+	 * @return hodnotu celkovıch bodov študenta ako double
+	 */
 	public double getSuma(int kurz) {
 		return this.suma[kurz];
 	}
 	
+	
+	/**
+	 * Metóda pri prvotnom plnení údajov o študentoch vygeneruje pre kadého študenta meno a uloí ho.</br>
+	 * Meno je generované v tvare "MenoStud_XX" , kde XX je poradové èíslo študenta.
+	 * @param poradie - poradové èíslo študenta od 1 do 100
+	 */
 	// zapis meno studenta
 	public void setMeno(int poradie) {
 		this.meno = "MenoStud_" + poradie;
 	}
 	
+	
+	/**
+	 * Metóda zisuje meno študenta.
+	 * @return meno študenta
+	 */
 	public String getMeno() {
 		return this.meno;
 	}	
 	
 	
-	//**************************************
+	//*********** nevyuíva sa ***************************
 	//hesla
 	
 	private String password = "";

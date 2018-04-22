@@ -1,5 +1,11 @@
 package projectMain;
 
+/**
+ * Trieda definuje spoloèné metódy pre predmety kurzu Matematika a Informatika prípadne ïalšie predmety. 
+ * Triedu využívajú triedy Students a Teachers.
+ * @author Denisa Mensatorisová
+ *
+ */
 public abstract class Subjects {
 	
 	public Subjects() {

@@ -29,14 +29,14 @@ public class Kurzy {
 	Teachers[] lektor = new Teachers[5];
 	
 	public LinkedList<Students>[] studenti = new LinkedList[4]; 
-	public LinkedList<Students> studentivysl = new LinkedList();
+	public LinkedList<Students> studentivysl = new LinkedList<Students>();
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
 
 	public List<String> zoznsub = new ArrayList<String>();
 	
 	/**
-	 * Metóda naplní generovanımi náhodnımi(Random) údajmi pole 100 študentov a pole 5 lektorov,
-	 * môe nasta vınimka IndexOutOfBoundsException ak je index po¾a mimo rozsah 
+	 * Metóda naplní generovanımi náhodnımi údajmi pole 100 študentov a pole 5 lektorov.</br>
+	 * Môe nasta vınimka IndexOutOfBoundsException ak je index po¾a mimo rozsah. 
 	 * @throws Exception
 	 */
 	public void inicializacia() throws Exception {
@@ -152,7 +152,7 @@ public class Kurzy {
 	//* Metóda zapise vysledky kurzu studentov do suboru cez serializaciu objektu
 	
 	/**
-	 * Metóda zapisuje celkové vısledky kurzu (po 3. kurze) študentov do súboru s vyzuitím serializácie objektu,
+	 * Metóda zapisuje celkové vısledky študentov po poslednom kurze do súboru s vyzuitím serializácie objektu,
 	 * údaje sú zapisované do súboru s generovanım názvom pod¾a aktuálneho dátumu a èasu v tvare "Vysledok_yyyyMMddHHmm.txt",	 
 	 * @param kurz - èíslo kurzu
 	 * @throws java.io.FileNotFoundException
@@ -184,7 +184,7 @@ public class Kurzy {
 	 * pri èítaní objektu deserializáciou môe nasta vınimka ak objekt v súbore je staršieho typu,
 	 * to znamená, e medzi zápisom objektu do súboru a aktuálnym stavom objektu došlo k zmene vo vlastnostiach objektu
 	 *  a tım nesedí serial èíslo objektu nové a staré uloené v súbore. 
-	 * @param s
+	 * @param s - názov súboru
 	 * @throws java.io.FileNotFoundException
 	 * @throws java.io.IOException
 	 * @throws java.io.InvalidClassException
@@ -210,8 +210,10 @@ public class Kurzy {
 		
 	}
 	
-	
-	//vypis konzola
+	/**
+	 * Metóda umoòuje vypísa vısledky študentov po kadom kurze na konzolu. 
+	 * @param kurz - poradie kurzu
+	 */
 	public void vypisStudent(int kurz) {
 		
 		int n = 0;
@@ -225,8 +227,9 @@ public class Kurzy {
 		}
 	}
 	
-	
-	//vypis konzola
+	/**
+	 * Metóda vypisuje na konzolu hodnotenie lektorov.
+	 */
 	public void vypisLektor() {
 		
 		int n = 0;

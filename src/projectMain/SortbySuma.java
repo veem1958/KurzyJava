@@ -4,8 +4,10 @@ package projectMain;
 import java.util.Comparator;
 
 /**
- * Trieda zabezpeèuje správne triedenie výsledkov kurzu pod¾a premennej <b>Suma</b>,
- * parametrom je èíslo kurzu a objekty <b>Students</b> 
+ * Trieda zabezpeèuje správne triedenie výsledkov kurzu pod¾a atribútu <b>suma</b> triedy Students,
+ * parametrom je èíslo kurzu a objekty <b>Students</b>.</br>
+ * Metóda "compare" triedy SortbySuma je modifikáciou metódy "compare" triedy java.util.Comparator.</br> 
+ * Vytvorený bol konštruktor triedy s parametrom.  
  * @author Denisa Mensatorisová
  *
  */
