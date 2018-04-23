@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InvalidClassException;
 import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
@@ -123,15 +123,15 @@ public class Kurzy {
 	 * prehæad·va aktu·lny adres·r ".", n·zvy s˙borov v liste zotriedi podæa aktu·lnosti	
 	 * @throws java.io.FileNotFoundException
 	 * @throws java.io.IOException
+	 * @throws IndexOutOfBoundsException
 	 */
-	public void najdiSuboryVysled() throws FileNotFoundException, IOException {
-		try {
-			
+	public void najdiSuboryVysled() throws IndexOutOfBoundsException, FileNotFoundException, IOException {
+	try {			
 			File folder = new File(".");     // moûe byù aj "." , "c:\Users\dede\eclipse-worskpace\"
 			File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 				@Override
 				public boolean accept(File folder, String name) {
-					return (name.endsWith(".txt") && name.startsWith("Vysl"));
+					return (name.endsWith(".txt") && name.startsWith("Vysl"));  // filter pre s˙bory s v˝sledkami
 				}
 			});
 
@@ -143,9 +143,14 @@ public class Kurzy {
 		    
 	        Collections.sort(zoznsub, Collections.reverseOrder());
 		    
-		} catch (Exception e) {
+		}
+		catch (IndexOutOfBoundsException eind) {
+			throw new IndexOutOfBoundsException("Index mimo rozsah. Nie je ûiadny s˙bor s v˝sledkami.");			
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
+	  
 	}
 	
 	
@@ -201,8 +206,10 @@ public class Kurzy {
 			
 		}
 		catch (InvalidClassException eobj) {
-			throw new InvalidClassException("Chyba objektu v s˙bore.");
-			
+			throw new InvalidClassException("Chyba objektu v s˙bore.");			
+		}
+		catch (FileNotFoundException ef) {
+			throw new FileNotFoundException("S˙bor sa nenaöiel.");			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

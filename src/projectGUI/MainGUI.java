@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Optional;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InvalidClassException;
 import java.lang.Exception;
 import javafx.application.*;
@@ -415,6 +416,18 @@ public class MainGUI extends Application {
 					al1.setContentText("Chyba ! Uložený objekt výsledkov je starý. Skúste novší súbor !");
 					al1.showAndWait();
 				}
+				catch (FileNotFoundException e2) {
+					Alert al2 = new Alert(AlertType.INFORMATION);
+					al2.setHeaderText("Informácia");
+					al2.setContentText("Chyba ! Súbor s výsledkami sa nenašiel !");
+					al2.showAndWait();
+				}
+				catch (IndexOutOfBoundsException eind) {
+					Alert al3 = new Alert(AlertType.INFORMATION);
+					al3.setHeaderText("Informácia");
+					al3.setContentText("Neexistuje žiadny súbor s výsledkami !");
+					al3.showAndWait();
+				}				
 				catch (Exception ex) {
 					ex.printStackTrace();
 				}
