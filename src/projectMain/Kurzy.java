@@ -25,13 +25,16 @@ import java.text.SimpleDateFormat;
 */
 public class Kurzy {
 	
+	/** student je pole 100 inštancií triedy Students */
 	Students[] student = new Students[100];
+	/** lektor je pole 5 inštancií triedy Teachers */
 	Teachers[] lektor = new Teachers[5];
 	
 	public LinkedList<Students>[] studenti = new LinkedList[4]; 
 	public LinkedList<Students> studentivysl = new LinkedList<Students>();
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
 
+	/** zoznsub je inštancia Triedy ArrayList a slúži pre ukladanie názvov súborov s koneènými výsledkami kurzu	 */
 	public List<String> zoznsub = new ArrayList<String>();
 	
 	/**
@@ -40,43 +43,45 @@ public class Kurzy {
 	 * @throws Exception
 	 */
 	public void inicializacia() throws Exception {
+		try {
+			for (int i = 0; i < 4; i++) {
+				 studenti[i] = new LinkedList<Students>();
+			}
+			
+			/** inicializácia študentov bez maturity z matematiky a informatiky */
+			for (int i = 0; i < 40; i++) {
+				student[i] = new Students(new Matematika(false), new Informatika(false));
+				student[i].naplnBody();
+				student[i].setSuma(0);
+				student[i].setMeno(i+1);
+				studenti[0].add(student[i]);
+			}
+			
+			/**inicializácia študentov s maturitov z matematiky a informatiky */
+			for (int i = 40; i < 100; i++) {
+				student[i] = new Students(new Matematika(true), new Informatika(true));
+				student[i].naplnBody();		
+				student[i].setSuma(0);
+				student[i].setMeno(i+1);
+				studenti[0].add(student[i]);
+			}
+					
+			/**inicializácia uèite¾ov */
+			for (int i = 0; i < 5; i++) {
+				lektor[i] = new Teachers(new Matematika(), new Informatika());
+				lektor[i].naplnBody();
+				lektori.add(lektor[i]);
+			}
 		
-		for (int i = 0; i < 4; i++) {
-			 studenti[i] = new LinkedList<Students>();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		
-		/** inicializacia studentov bez maturity z matematiky a informatiky */
-		for (int i = 0; i < 40; i++) {
-			student[i] = new Students(new Matematika(false), new Informatika(false));
-			student[i].naplnBody();
-			student[i].setSuma(0);
-			student[i].setMeno(i+1);
-			studenti[0].add(student[i]);
-		}
-		
-		/**inicializacia studentov s maturitov z matematiky a informatiky */
-		for (int i = 40; i < 100; i++) {
-			student[i] = new Students(new Matematika(true), new Informatika(true));
-			student[i].naplnBody();		
-			student[i].setSuma(0);
-			student[i].setMeno(i+1);
-			studenti[0].add(student[i]);
-		}
-				
-		/**inicializacia ucitelov */
-		for (int i = 0; i < 5; i++) {
-			lektor[i] = new Teachers(new Matematika(), new Informatika());
-			lektor[i].naplnBody();
-			lektori.add(lektor[i]);
-		}
-		
-		
 	}
 	
 	
 	/** 
 	 * Metóda <b>beh</b> realizuje kurzy študentov s náhodným výberom lektora, 
-	 * študenti dostávajú za každý kurz náhodne body z matematiky a informatiky,
+	 * študenti dostávajú za každý kurz náhodne body z Matematiky a Informatiky,
 	 * po 3 kurze sa celkové dosiahnuté body zapíšu do súboru cez serializáciu objektu
 	 * @param kurz - poradie kurzu 1 až 3
 	 */
@@ -86,8 +91,6 @@ public class Kurzy {
 		int inf = (int) (Math.random() * 5 + 0);
 		double bodyMat = lektor[mat].mat.getMarks(lektor[mat]);	//zistenie bodov lektora z daneho predmetu
 		double bodyInf = lektor[inf].inf.getMarks(lektor[inf]);
-		//System.out.println("Mat: ucitel: " + mat + " - " + bodyMat);
-		//System.out.println("Inf: ucitel: " + inf + " - " + bodyInf + "\n");
 						
 		for (int i = 0; i < 100; i++) {
 			student[i].addBody(kurz, bodyMat, bodyInf);
@@ -98,7 +101,7 @@ public class Kurzy {
 		// zotriedi podla celkoveho poctu bodov Suma = Mat+Inf	
 		Collections.sort(studenti[kurz], Collections.reverseOrder(new SortbySuma(kurz)));
 		
-		// zapise do suboru celkove vysledky cez serializaciu objektu
+		// zapíše do súboru celkové výsledky cez serializáciu objektu
 		if (kurz == 3) {
 			try {
 				zapisObjekt(kurz);				
@@ -107,7 +110,7 @@ public class Kurzy {
 				e.printStackTrace();
 			}
 			
-			// prezrie aktualny adresár na súbory s výsledkami
+			// prezrie aktuálny adresár na súbory s výsledkami a naèíta ich názvy
 			try {
 			    najdiSuboryVysled();
 			} 
@@ -154,7 +157,6 @@ public class Kurzy {
 	}
 	
 	
-	//* Metóda zapise vysledky kurzu studentov do suboru cez serializaciu objektu
 	
 	/**
 	 * Metóda zapisuje celkové výsledky študentov po poslednom kurze do súboru s vyzužitím serializácie objektu,
@@ -234,9 +236,7 @@ public class Kurzy {
 		}
 	}
 	
-	/**
-	 * Metóda vypisuje na konzolu hodnotenie lektorov.
-	 */
+	/** Metóda vypisuje na konzolu hodnotenie lektorov.	 */
 	public void vypisLektor() {
 		
 		int n = 0;
@@ -249,7 +249,11 @@ public class Kurzy {
 		}
 	}
 	
-	//hesla
+	/**
+	 * Metóda umožòuje vygenerova a prideli každému študentovi heslo.
+	 * Nevyužíva sa - viï popis {@link Students#setPassword() setPassword} metódy. 
+	 * @call Students.setPassword()
+	 */
 	public void hesla() {
 		
 		Iterator<Students> iter = studenti[0].iterator();  
@@ -259,6 +263,10 @@ public class Kurzy {
 		}
 	}
 	
+	/** 
+	 * Metóda vypisuje na konzolu študentom pridelené náhodne generované heslá. 
+	 * Nevyužíva sa - pozri {@linkplain Students#setPassword() setPassword} metódu.
+	 */
 	public void vypisHesla() {
 		
 		int n = 0;

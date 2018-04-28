@@ -1,10 +1,9 @@
 package projectMain;
 
 /**
- * Trieda Matematika je podtriedou abstraktnej triedy Subjects. Dedí metódy z triedy Subjects.</br>
- * Zabezpeèuje zápis a naèítanie údajov študentov a lektorov z predmetu Matematika.
+ * Trieda Matematika je podtriedou abstraktnej triedy Subjects. Dedí metódy z nadtriedy Subjects.</br>
+ * Zabezpeèuje zápis a naèítanie údajov študentov a lektorov z predmetu Matematika. Metódy napåòajú princíp polymorfizmu.
  * @author Denisa Mensatorisová
- *
  */
 public class Matematika extends Subjects {
 		
@@ -13,12 +12,12 @@ public class Matematika extends Subjects {
 	private boolean maturita;
 	
 	
-	//konstruktor pre studenta
+	/** Konštruktor triedy Matematika pre študenta */
 	public Matematika(boolean matura) {
 		setMaturita(matura);
 	}
 	
-	//konstruktor pre ucitela
+	/** Konštruktor triedy Matematika pre lektora */
 	public Matematika() {	
 	}
 	
@@ -30,8 +29,7 @@ public class Matematika extends Subjects {
 	public boolean getMaturita(Students student) {
 		return this.maturita;
 	}
-	
-	
+		
 	
 	public void setMarks(Students student) {
 		
@@ -56,11 +54,10 @@ public class Matematika extends Subjects {
 		return this.marksKurzy[0];
 	}
 	
-	// pridavanie bodov studentom
 	/**
 	 * Metóda vypoèíta body (náhodne sa generujú) za aktuálny kurz a pripoèíta ich k doteraz získanım bodom.</br>
 	 * Do vıpoètu vstupuje aj náhodne generovaná hodnota premennej <i>"vnimanie"</i> v rozsahu od 0,7 do 1, ktorá vystihuje aktuálnu schopnos študenta sústredi sa.</br>
-	 * Získané body sú prenásobené hodnotou premennej <i>"vnimanie"</i>.
+	 * Získané body sú prenásobené hodnotou premennej <i>"vnimanie"</i>. Metóda je príkladom dedenia a polymorfizmu.
 	 * @param student - pole študentov
 	 * @param kurz - poradie kurzu
 	 * @param bodyMat - získané nové body z Matematiky

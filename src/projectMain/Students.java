@@ -12,25 +12,28 @@ import java.util.Random;
 */
 public class Students implements Passwords, Serializable {
 	
+	/** Pridelenie pevného interného serial èísla pre objekt typu Students */
 	private static final long serialVersionUID = 1L;
 	transient protected Subjects mat;
 	transient protected Subjects inf;
+	/** Celkovı súèet bodov z Matematiky a Informatiky na zaèiatku a po absolvovaní kadého z 3 kurzov  */
 	private double[] suma =  new double[4];		//suma bodov z mat aj info za kazdy kurz
 	private String meno;
 	String text = "";
 	
+	/** Konštruktor triedy Students s agregáciou tried Matematika a Informatika */
 	public Students(Subjects mat, Subjects info) {
 		this.mat = mat;
 		this.inf = info;
 	}
 	
-	//prve pridelenie bodom studentom na zaklade vysledkov z maturity 
+	/** Metóda umoòuje prideli prvé body študentom na základe vısledkov zo strednej školy a maturity z predmetov Matematika a Informatika */ 
 	public void naplnBody() {
 		mat.setMarks(this);
 		inf.setMarks(this);
 	}
 	
-	//vypis konzola
+	/** Metóda vypíše na konzolu dosiahnuté vısledky z Matematiky a Informatiky ako aj celkové vısledky po absolvovaní zadaného èísla kurzu */
 	public void vypis(int kurz) {
 		String maturitaM;
 		String maturitaI;
@@ -47,7 +50,7 @@ public class Students implements Passwords, Serializable {
 								+ "\t  Spolu: "	+ this.getSuma(kurz) + "	  Maturita: " + maturitaM + ", " + maturitaI);
 	}
 	
-
+	/** Metóda vypíše na konzolu celkové vısledky študentov vo formáte meno študenta a celkové body */
 	public void vypisvysl() {
 		System.out.println(this.getMeno() + "\t Body spolu: "	+ this.getSuma(3) );
 	}
@@ -67,8 +70,7 @@ public class Students implements Passwords, Serializable {
 		return this.text;
 	}
 	
-	
-		
+			
 	/**
 	 * Metóda sformátuje údaje študenta do reazca vhodného pre vıpis v GUI.
 	 * @param kurz - vıber údajov pod¾a poadovaného èísla kurzu
@@ -104,7 +106,6 @@ public class Students implements Passwords, Serializable {
 	 * @param bodyMat - hodnota bodov získanıch v danom kurze pre Matematiku
 	 * @param bodyInf - hodnota bodov získanıch v danom kurze pre Informatiku
 	 */
-	//pridavanie bodov studentom po jednotlivych kurzoch
 	public void addBody(int kurz, double bodyMat, double bodyInf) {
 		mat.addMarks(this, kurz, bodyMat);
 		inf.addMarks(this, kurz, bodyInf);
@@ -114,7 +115,6 @@ public class Students implements Passwords, Serializable {
 	 * Metóda zapisuje celkové body získané v danom kurze ako súèet bodov z Matematiky a Informatiky.
 	 * @param kurz - poradie kurzu
 	 */
-	//suma bodov mat + info 
 	public void setSuma(int kurz) {
 		this.suma[kurz] = (double) Math.round((mat.getMarks(this, kurz) + inf.getMarks(this, kurz))*100)/100;
 	}
@@ -135,7 +135,6 @@ public class Students implements Passwords, Serializable {
 	 * Meno je generované v tvare "MenoStud_XX" , kde XX je poradové èíslo študenta.
 	 * @param poradie - poradové èíslo študenta od 1 do 100
 	 */
-	// zapis meno studenta
 	public void setMeno(int poradie) {
 		this.meno = "MenoStud_" + poradie;
 	}
@@ -151,10 +150,13 @@ public class Students implements Passwords, Serializable {
 	
 	
 	//*********** nevyuíva sa ***************************
-	//hesla
 	
 	private String password = "";
 	
+	/** Metóda generuje náhodne zo zadanej sady znakov heslo pre kadého študenta pri prvom naplnení údajmi.
+	 * Vygenerované heslo malo by doruèené kadému študentovi a na základe toho sa potom mohol prihlási do aplikácie.
+	 * Vzh¾adom na demonštraènú povahu programu táto verzia sa obišla tım, e všetci študenti majú 1 spoloèné heslo a login pre prihlásenie.  
+	 */
 	public void setPassword() {
 		
 		String alphabet= "abcdefghijklmnopqrstuvwxyz";
@@ -166,6 +168,7 @@ public class Students implements Passwords, Serializable {
 		}
 	}
 	
+	/** Metóda umoòuje zisti heslo pre študenta. Nepouíva sa. Pre študentov je napevno v aplikácii pridelené 1 spoloèné heslo aj login. */ 
 	public String getPassword() {		
 		return this.password;
 	}
