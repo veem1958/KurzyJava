@@ -11,20 +11,20 @@ public class Teachers {
 	/** inf je agregovaná trieda Informatika */
 	protected Subjects inf;
 	
-	/** Konštruktor triedy Teachers s agregáciou tried Matematika a Informatika */
+	/** Konštruktor triedy Teachers s agregáciou tried Matematika a Informatika. */
 	public Teachers(Subjects mat, Subjects info) {
 		this.mat = mat;
 		this.inf = info;
 	}
 	
 	//body, ktore maju jednotlivy ucitelia podla schopnosti naucit 
-	/** Metóda zapisuje body lektorom z predmetov Matematika a Informatika, ktoré vyjadrujú ich schopnos nauèi a vysvetli tému z daného predmetu */
+	/** Metóda zapisuje body lektorom z predmetov Matematika a Informatika, ktoré vyjadrujú ich schopnos nauèi a vysvetli tému z daného predmetu. */
 	public void naplnBody() {
 		mat.setMarks(this);
 		inf.setMarks(this);
 	}
 	
-	/** Metóda vypisuje body lektorov na konzolu z predmetov Matematika a Informatika */
+	/** Metóda vypisuje body lektorov na konzolu z predmetov Matematika a Informatika. */
 	public void vypis() {
 		System.out.println("Mat: " + mat.getMarks(this) + "	Inf: " + inf.getMarks(this));
 	}

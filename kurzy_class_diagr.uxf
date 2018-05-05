@@ -5,59 +5,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>80</x>
-      <y>0</y>
-      <w>432</w>
-      <h>552</h>
-    </coordinates>
-    <panel_attributes>projectGUI::MainGUI
---
--prehlad = new Label("PREHĽAD:"): Label
--nazov = new Label("PRÍPRAVNÝ KURZ Z MATEMATIKY A INFORMATIKY"): Label
--student = new Button("Študenti"): Button
--lektor = new Button("Lektori"): Button
--signOut = new Button("Odhlásiť sa"): Button
--vypis = new TextArea(): TextArea
--login = new Label("Prihlasovacie meno: "): Label
--password = new Label("Heslo: "): Label
--loginText = new TextField(): TextField
--passwordText = new PasswordField(): PasswordField
--signIn = new Button("Prihlásiť sa"): Button
-~kurzy = new Label("Prehľad bodov"): Label
-~kurz0 = new Button("Pred kurzom"): Button
-~kurz1 = new Button("Po 1.kurze"): Button
-~kurz2 = new Button("Po 2.kurze"): Button
-~kurz3 = new Button("Po 3.kurze"): Button
-~beh = new Label("Beh kurzov"): Label
-~novy = new Button("nová skupina"): Button
-~beh1 = new Button("1.kurz"): Button
-~beh2 = new Button("2.kurz"): Button
-~beh3 = new Button("3.kurz"): Button
-~stare = new Button("staré výsledky"): Button
-~course = new Kurzy(): Kurzy
-~vb1 = new Thread(new VlaknoBeh(1)): Thread
-~vb2 = new Thread(new VlaknoBeh(2)): Thread
-~vb3 = new Thread(new VlaknoBeh(3)): Thread
-~hlavicka = "STUDENT\t\t\t\t\t BODY\n": String
---
-+start(Stage hlavneOkno): void
--loginMenu(): GridPane
--addGridPane1(): GridPane
--addGridPane2(): GridPane
--addVBoxBottom(): VBox
--addVBoxTop(): VBox
--addHBoxBottom(): HBox
--addHBoxTop(): HBox
--addHBoxLogOut(): HBox
-+main(String[] args): void
---
-</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>80</x>
-      <y>616</y>
+      <y>608</y>
       <w>304</w>
       <h>320</h>
     </coordinates>
@@ -91,7 +39,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>560</x>
+      <x>512</x>
       <y>0</y>
       <w>344</w>
       <h>248</h>
@@ -122,7 +70,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>192</x>
-      <y>1072</y>
+      <y>1064</y>
       <w>312</w>
       <h>208</h>
     </coordinates>
@@ -149,7 +97,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>568</x>
-      <y>1072</y>
+      <y>1064</y>
       <w>312</w>
       <h>208</h>
     </coordinates>
@@ -176,7 +124,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>448</x>
-      <y>824</y>
+      <y>816</y>
       <w>296</w>
       <h>144</h>
     </coordinates>
@@ -198,7 +146,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>600</x>
-      <y>632</y>
+      <y>624</y>
       <w>232</w>
       <h>112</h>
     </coordinates>
@@ -218,7 +166,7 @@
     <id>UMLClass</id>
     <coordinates>
       <x>432</x>
-      <y>576</y>
+      <y>568</y>
       <w>136</w>
       <h>88</h>
     </coordinates>
@@ -236,7 +184,7 @@ projectMain::Passwords
     <id>UMLClass</id>
     <coordinates>
       <x>80</x>
-      <y>952</y>
+      <y>944</y>
       <w>200</w>
       <h>88</h>
     </coordinates>
@@ -254,7 +202,7 @@ projectMain::Passwords
     <id>Relation</id>
     <coordinates>
       <x>336</x>
-      <y>960</y>
+      <y>952</y>
       <w>232</w>
       <h>128</h>
     </coordinates>
@@ -265,7 +213,7 @@ projectMain::Passwords
     <id>Relation</id>
     <coordinates>
       <x>624</x>
-      <y>960</y>
+      <y>952</y>
       <w>104</w>
       <h>128</h>
     </coordinates>
@@ -276,7 +224,7 @@ projectMain::Passwords
     <id>Relation</id>
     <coordinates>
       <x>376</x>
-      <y>752</y>
+      <y>744</y>
       <w>160</w>
       <h>88</h>
     </coordinates>
@@ -287,7 +235,7 @@ projectMain::Passwords
     <id>Relation</id>
     <coordinates>
       <x>632</x>
-      <y>736</y>
+      <y>728</y>
       <w>88</w>
       <h>104</h>
     </coordinates>
@@ -298,11 +246,81 @@ projectMain::Passwords
     <id>Relation</id>
     <coordinates>
       <x>376</x>
-      <y>656</y>
+      <y>648</y>
       <w>136</w>
       <h>72</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>150.0;10.0;150.0;70.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>280</y>
+      <w>184</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>projectMain::MyLoginException
+--
+--
++MyLoginException(): ctor
++MyLoginException(String s): ctor
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>8</x>
+      <y>0</y>
+      <w>440</w>
+      <h>544</h>
+    </coordinates>
+    <panel_attributes>projectGUI::MainGUI
+--
+-prehlad = new Label("PREHĽAD:"): Label
+-nazov = new Label("PRÍPRAVNÝ KURZ Z MATEMATIKY A INFORMATIKY"): Label
+-student = new Button("Študenti"): Button
+-lektor = new Button("Lektori"): Button
+-signOut = new Button("Odhlásiť sa"): Button
+-vypis = new TextArea(): TextArea
+-login = new Label("Prihlasovacie meno: "): Label
+-password = new Label("Heslo: "): Label
+-loginText = new TextField(): TextField
+-passwordText = new PasswordField(): PasswordField
+-signIn = new Button("Prihlásiť sa"): Button
+~kurzy = new Label("Prehľad bodov"): Label
+~kurz0 = new Button("Pred kurzom"): Button
+~kurz1 = new Button("Po 1.kurze"): Button
+~kurz2 = new Button("Po 2.kurze"): Button
+~kurz3 = new Button("Po 3.kurze"): Button
+~beh = new Label("Beh kurzov"): Label
+~novy = new Button("nová skupina"): Button
+~beh1 = new Button("1.kurz"): Button
+~beh2 = new Button("2.kurz"): Button
+~beh3 = new Button("3.kurz"): Button
+~stare = new Button("staré výsledky"): Button
+~course = new Kurzy(): Kurzy
+~vb1 = new Thread(new VlaknoBeh(1)): Thread
+~vb2 = new Thread(new VlaknoBeh(2)): Thread
+~vb3 = new Thread(new VlaknoBeh(3)): Thread
+~hlavicka = "ŠTUDENT\t\t\t\t\t BODY\n": String
+--
++start(Stage hlavneOkno): void
+-loginMenu(): GridPane
+-addGridPane1(): GridPane
+-addGridPane2(): GridPane
+-addVBoxBottom(): VBox
+-addVBoxTop(): VBox
+-addHBoxBottom(): HBox
+-addHBoxTop(): HBox
+-addHBoxLogOut(): HBox
++KontrolaLogin(String user, String passwd): int
++main(String[] args): void
+--
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

@@ -34,7 +34,7 @@ public class Kurzy {
 	public LinkedList<Students> studentivysl = new LinkedList<Students>();
 	LinkedList<Teachers> lektori = new LinkedList<Teachers>();
 
-	/** zoznsub je inštancia Triedy ArrayList a slúi pre ukladanie názvov súborov s koneènımi vısledkami kurzu	 */
+	/** zoznsub je inštancia Triedy ArrayList a slúi pre ukladanie názvov súborov s koneènımi vısledkami kurzu.	 */
 	public List<String> zoznsub = new ArrayList<String>();
 	
 	/**
@@ -48,7 +48,7 @@ public class Kurzy {
 				 studenti[i] = new LinkedList<Students>();
 			}
 			
-			/** inicializácia študentov bez maturity z matematiky a informatiky */
+			/** Inicializácia študentov bez maturity z Matematiky a Informatiky. */
 			for (int i = 0; i < 40; i++) {
 				student[i] = new Students(new Matematika(false), new Informatika(false));
 				student[i].naplnBody();
@@ -57,7 +57,7 @@ public class Kurzy {
 				studenti[0].add(student[i]);
 			}
 			
-			/**inicializácia študentov s maturitov z matematiky a informatiky */
+			/** Inicializácia študentov s maturitou z Matematiky a Informatiky. */
 			for (int i = 40; i < 100; i++) {
 				student[i] = new Students(new Matematika(true), new Informatika(true));
 				student[i].naplnBody();		
@@ -66,7 +66,7 @@ public class Kurzy {
 				studenti[0].add(student[i]);
 			}
 					
-			/**inicializácia uèite¾ov */
+			/** Inicializácia uèite¾ov. */
 			for (int i = 0; i < 5; i++) {
 				lektor[i] = new Teachers(new Matematika(), new Informatika());
 				lektor[i].naplnBody();
@@ -82,8 +82,8 @@ public class Kurzy {
 	/** 
 	 * Metóda <b>beh</b> realizuje kurzy študentov s náhodnım vıberom lektora, 
 	 * študenti dostávajú za kadı kurz náhodne body z Matematiky a Informatiky,
-	 * po 3 kurze sa celkové dosiahnuté body zapíšu do súboru cez serializáciu objektu
-	 * @param kurz - poradie kurzu 1 a 3
+	 * po 3 kurze sa celkové dosiahnuté body zapíšu do súboru cez serializáciu objektu.
+	 * @param kurz  poradie kurzu 1 a 3
 	 */
 	public void beh(int kurz) {
 		
@@ -123,14 +123,14 @@ public class Kurzy {
 	
 	/**
 	 * Metóda vyh¾adá súbory starších vısledkov a názvy súborov uloí do listu <i>zoznsub</i>,
-	 * preh¾adáva aktuálny adresár ".", názvy súborov v liste zotriedi pod¾a aktuálnosti	
+	 * preh¾adáva aktuálny adresár ".", názvy súborov v liste zotriedi pod¾a aktuálnosti.	
 	 * @throws java.io.FileNotFoundException
 	 * @throws java.io.IOException
 	 * @throws IndexOutOfBoundsException
 	 */
 	public void najdiSuboryVysled() throws IndexOutOfBoundsException, FileNotFoundException, IOException {
 	try {			
-			File folder = new File(".");     // moe by aj "." , "c:\Users\dede\eclipse-worskpace\"
+			File folder = new File(".");                  // moe by aj "." , "c:\Users\dede\eclipse-worskpace\"
 			File[] listOfFiles = folder.listFiles(new FilenameFilter() {
 				@Override
 				public boolean accept(File folder, String name) {
@@ -161,7 +161,7 @@ public class Kurzy {
 	/**
 	 * Metóda zapisuje celkové vısledky študentov po poslednom kurze do súboru s vyzuitím serializácie objektu,
 	 * údaje sú zapisované do súboru s generovanım názvom pod¾a aktuálneho dátumu a èasu v tvare "Vysledok_yyyyMMddHHmm.txt",	 
-	 * @param kurz - èíslo kurzu
+	 * @param kurz  èíslo kurzu
 	 * @throws java.io.FileNotFoundException
 	 * @throws java.io.IOException
 	 * @throws java.io.InvalidObjectException  
@@ -191,7 +191,7 @@ public class Kurzy {
 	 * pri èítaní objektu deserializáciou môe nasta vınimka ak objekt v súbore je staršieho typu,
 	 * to znamená, e medzi zápisom objektu do súboru a aktuálnym stavom objektu došlo k zmene vo vlastnostiach objektu
 	 *  a tım nesedí serial èíslo objektu nové a staré uloené v súbore. 
-	 * @param s - názov súboru
+	 * @param s  názov súboru
 	 * @throws java.io.FileNotFoundException
 	 * @throws java.io.IOException
 	 * @throws java.io.InvalidClassException
@@ -221,7 +221,7 @@ public class Kurzy {
 	
 	/**
 	 * Metóda umoòuje vypísa vısledky študentov po kadom kurze na konzolu. 
-	 * @param kurz - poradie kurzu
+	 * @param kurz  poradie kurzu
 	 */
 	public void vypisStudent(int kurz) {
 		

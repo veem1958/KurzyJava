@@ -47,6 +47,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import projectMain.Kurzy;
+import projectMain.MyLoginException;
 import projectMain.Students;
 
 /**
@@ -100,11 +101,11 @@ public class MainGUI extends Application {
 	Button stare = new Button("staré vısledky");
 	//
 	
-	
+	/** Inštancia triedy Kurzy  */
 	Kurzy course = new Kurzy();
 	
 	/** 
-	 * 3 vlákna pre beh kurzov, kadı kurz má svoje vlákno
+	 * 3 inštancie vlákna vb1 a vb3 pre beh kurzov, kadı kurz beí vo vlastnom vlákne.
 	 * @see java.lang.Thread
 	 * @see java.lang.Runnable
 	 */	
@@ -112,12 +113,12 @@ public class MainGUI extends Application {
 	Thread vb2 = new Thread(new VlaknoBeh(2));   // vlákno 2 pre beh 2. kurzu
 	Thread vb3 = new Thread(new VlaknoBeh(3));   // vlákno 3 pre beh 3. kurzu
 	
-	String hlavicka = "STUDENT\t\t\t\t\t BODY\n";
+	String hlavicka = "ŠTUDENT\t\t\t\t\t BODY\n";
 	
 	//main-----------------------------------------------------------------------
 	public void start(Stage hlavneOkno) throws Exception {
 				
-		hlavneOkno.setTitle("Prípravnı kury FIIT STU");
+		hlavneOkno.setTitle("Prípravnı kurz FIIT STU");
 		
 		BorderPane border = new BorderPane();
 
@@ -148,18 +149,46 @@ public class MainGUI extends Application {
 		//-------------------------------------------------------------
 		
 		/**
-		 * štart hlavného okna, menu a okna pre login
+		 * Štart okna pre prihlásenie, hlavného okna a menu aplikácie.
 		 */
 		class Prihlasenie implements EventHandler<ActionEvent> {
 			@Override
 			public void handle(ActionEvent event) { 
 				
-				//hesla
 				String uzivatel = "";
 				String heslo = "";
 				uzivatel = loginText.getText();
 				heslo = passwordText.getText();
+				
+				try {
+					// prihlásenie študenta
+					if (KontrolaLogin(uzivatel, heslo) == 1) {
+						hlavneOkno.setScene(hlavnascena);
+						hlavneOkno.show();
+						hlavneOkno.centerOnScreen();
+						student.setDisable(false);
+						lektor.setDisable(true);
+						border.setLeft(addGridPane1());						
 
+					}  // prihlásenie lektora
+					else if (KontrolaLogin(uzivatel, heslo) == 2) {
+						hlavneOkno.setScene(hlavnascena);
+						hlavneOkno.show();
+						hlavneOkno.centerOnScreen();
+						student.setDisable(false);
+						lektor.setDisable(false);
+						border.setLeft(addGridPane2());
+						
+					}
+				}     // chyba prihlasenia
+				catch (MyLoginException el) {
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.setContentText("Chyba prihlásenia !");
+					alert.showAndWait();
+					
+				}
+				/* povodne - moze sa zrusit !!!
+				 
 				if (uzivatel.equalsIgnoreCase("student") && heslo.equalsIgnoreCase("abc123")) {
 					hlavneOkno.setScene(hlavnascena);
 					hlavneOkno.show();
@@ -182,6 +211,7 @@ public class MainGUI extends Application {
 					alert.setContentText("Chyba prihlásenia !");
 					alert.showAndWait();
 				}
+				*/
 			}
 		}
 		
@@ -309,7 +339,7 @@ public class MainGUI extends Application {
 			beh1.setOnAction((ActionEvent e) -> {
 				vypis.clear();
  			    vypis.appendText("\nPrebieha 1. kurz ! \n");
-				vb1.start();				//  spusti beh 1 v novom vlakne
+				vb1.start();				//  spusti beh 1 v novom vlákne
  			    vypis.appendText("\n1. kurz ukonèenı ! \n");
 				kurz1.setDisable(false);
 				beh2.setDisable(false);
@@ -331,7 +361,7 @@ public class MainGUI extends Application {
 			beh3.setOnAction((ActionEvent e) -> {
 				vypis.clear();
  			    vypis.appendText("\nPrebieha 3. kurz ! \n");
-				vb3.start();				//  spusti beh 3 v novom vlakne
+				vb3.start();				//  spusti beh 3 v novom vlákne
  			    vypis.appendText("\n3. kurz ukonèenı ! \n");
 				kurz3.setDisable(false);
 				beh3.setDisable(true);				
@@ -339,31 +369,14 @@ public class MainGUI extends Application {
 
 
 			/**
-			 * Vyh¾adanie, naèítanie a vıpis starıch celkovıch vısledkov kurzov uloenıch v súboroch - spúša lektor
+			 * Vyh¾adanie, naèítanie a vıpis starıch celkovıch vısledkov kurzov uloenıch v súboroch - spúša lektor.
 			 @throws InvalidClassException v prípade ak uloenı objekt s vısledkami je staršia verzia a nesedí sériové èíslo objektu 
 			 */
 			stare.setOnAction((ActionEvent e) -> {
 				try {
 			        String selected = "canceled";
-			        
-			        /*
-					// zistenie cesty k suboru MainGUI.class
-					String path2 = MainGUI.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-				    path2 = path2.substring(0, path2.lastIndexOf("/")) ;
-				    path2 = path2.substring(1, path2.lastIndexOf("/")) + "/" ;
-				    
-					FileChooser vs = new FileChooser();
-					vs.setTitle("Vıber starších vısledkov");
-					vs.setInitialDirectory(new File(path2) );
-					vs.getExtensionFilters().addAll(
-							new ExtensionFilter("Vısledky Files", "Vysledok*.txt"),
-							new ExtensionFilter("Text Files", "*.txt"),
-							new ExtensionFilter("All Files", "*.*")
-							);
-					File selectedFile = vs.showOpenDialog(hlavneOkno);
-					*/
-			        
-					course.zoznsub.clear();      // vycisti pole pre názvy súborov s vısledkami
+			        			        
+					course.zoznsub.clear();      // vyèistí pole pre názvy súborov s vısledkami
 					course.najdiSuboryVysled();  // vyh¾adá súbory s vısledkami a naplní do zoznsub
 
 					// obalí objekt zoznsub do Observable Listu, èím bude tento automaticky aktualizovanı pod¾a obsahu v zoznsub
@@ -384,13 +397,9 @@ public class MainGUI extends Application {
 			        selected = "canceled";
 			        
 			        if (result.isPresent()) {
-			            selected = result.get();
+			            selected = result.get();    // ak bolo nieèo zvolené vrá názov súboru
 			        }
 
-			        /*			        
-					if (selectedFile != null) {
-						selected = selectedFile.getName();
-					*/
 			        
 			        // vıpis TOP 20 vısledkov naèítanıch zo zvoleného súboru
 			        if (selected != "canceled") {
@@ -409,7 +418,7 @@ public class MainGUI extends Application {
 						}
 					}
 			        			      					
-				}
+				}  // ošetrenie vınimiek
 				catch (InvalidClassException e1) {
 					Alert al1 = new Alert(AlertType.INFORMATION);
 					al1.setHeaderText("Informácia");
@@ -597,8 +606,8 @@ public class MainGUI extends Application {
 	}
 	
 	/**
-	 * Trieda pre pouitie Vlakna (Threads) s parametrom èísla behu(kurzu),
-	 * staèí jedna trieda ale bude potreba vytvori 3 inštancie pre kadı beh zvláš 
+	 * Trieda pre pouitie Vlakna (Threads) s parametrom èísla behu (kurzu),
+	 * staèí jedna trieda ale sa vytvoria 3 inštancie triedy pre kadı beh kurzu zvláš. 
 	 */
 	class VlaknoBeh implements Runnable {
 		private int kurz ;
@@ -614,7 +623,21 @@ public class MainGUI extends Application {
    		}
 	}	
 
-	
+	/**
+	 * Metóda skontroluje zadané prihlasovacie meno a heslo. Ak zadané údaje nie sú správne vyvolá vlastnú vınimku MyLoginException.
+	 * @param user prihlasovacie meno
+	 * @param passwd heslo uívate¾a
+	 * @return  vráti celé èíslo 0,1,2 , ak je návratová hodnota = 0 tak je prihlásenie neplatné, ak je = 1 tak sa prihlásil študent, ak je = 2 tak sa prihlásil lektor.
+	 * @throws MyLoginException
+	 */
+	 int KontrolaLogin(String user, String passwd) throws MyLoginException {
+		int vysl = 0;
+		if (user.equalsIgnoreCase("student") && passwd.equalsIgnoreCase("abc123")) vysl = 1;
+		if (user.equalsIgnoreCase("lektor") && passwd.equalsIgnoreCase("123abc")) vysl = 2;
+		if ( vysl == 0 )  
+            throw new MyLoginException("***MyLoginException***");
+		return vysl;
+	}
 
 	public static void main(String[] args) {
 		launch(args);		
